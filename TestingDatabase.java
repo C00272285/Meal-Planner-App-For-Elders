@@ -7,13 +7,15 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class TestingDatabase extends JFrame implements ActionListener {
+public class TestingDatabase extends JFrame implements ActionListener
+{
 
     // Variables
-    private JLabel ForeName, SurName, Age, Weight;
+    private JLabel ForeName, SurName, Age, Weight, DietaryProblemLabel;
     private JTextField ForeNameField, SurNameField, AgeField, WeightField;
     private JRadioButton maleRadio, femaleRadio;
     private JButton addButton, cancelButton;
+    private JComboBox<String> dietaryProblemComboBox;
 
     public TestingDatabase()
     {
@@ -24,6 +26,7 @@ public class TestingDatabase extends JFrame implements ActionListener {
         SurName = new JLabel("Last Name:");
         Age = new JLabel("Age:");
         Weight = new JLabel("Weight:");
+        DietaryProblemLabel = new JLabel("Dietary Problem:");
 
         ForeNameField = new JTextField(10);
         SurNameField = new JTextField(10);
@@ -36,6 +39,10 @@ public class TestingDatabase extends JFrame implements ActionListener {
         genderGroup.add(maleRadio);
         genderGroup.add(femaleRadio);
 
+        // Define the dietary problems
+        String[] dietaryProblems = {"Diabetes", "Lactose Intolerance", "Digestive Issues", "Malnutrition"};
+        dietaryProblemComboBox = new JComboBox<>(dietaryProblems);
+
         addButton = new JButton("Create");
         cancelButton = new JButton("Dispose");
 
@@ -45,7 +52,7 @@ public class TestingDatabase extends JFrame implements ActionListener {
         Screen.insets = new Insets(30, 30, 30, 30);
         Screen.anchor = GridBagConstraints.WEST;
 
-        // moving the labels arround 
+        // moving the labels around
         Screen.gridx = 0;
         Screen.gridy = 1;
         add(ForeName, Screen);
@@ -80,22 +87,30 @@ public class TestingDatabase extends JFrame implements ActionListener {
 
         Screen.gridx = 0;
         Screen.gridy = 5;
-        add(new JLabel("Gender:"), Screen);
+        add(DietaryProblemLabel, Screen);
 
         Screen.gridx = 1;
         Screen.gridy = 5;
+        add(dietaryProblemComboBox, Screen);
+
+        Screen.gridx = 0;
+        Screen.gridy = 6;
+        add(new JLabel("Gender:"), Screen);
+
+        Screen.gridx = 1;
+        Screen.gridy = 6;
         JPanel genderPanel = new JPanel();
         genderPanel.add(maleRadio);
         genderPanel.add(femaleRadio);
         add(genderPanel, Screen);
 
         Screen.gridx = 0;
-        Screen.gridy = 7;
+        Screen.gridy = 8;
         Screen.anchor = GridBagConstraints.CENTER;
         add(addButton, Screen);
 
         Screen.gridx = 1;
-        Screen.gridy = 7;
+        Screen.gridy = 8;
         add(cancelButton, Screen);
 
         // Add button action listener
@@ -109,8 +124,10 @@ public class TestingDatabase extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == cancelButton) {
+    public void actionPerformed(ActionEvent e)
+    {
+        if (e.getSource() == cancelButton)
+        {
             dispose();
             return;
         }
@@ -119,7 +136,8 @@ public class TestingDatabase extends JFrame implements ActionListener {
         String userAgeText = AgeField.getText();
         String weightText = WeightField.getText();
 
-        if (!isValidAge(userAgeText) || !isValidWeight(weightText)) {
+        if (!isValidAge(userAgeText) || !isValidWeight(weightText))
+        {
             JOptionPane.showMessageDialog(this, "Invalid Age or Weight. Please enter valid values.");
             return;
         }
@@ -129,24 +147,27 @@ public class TestingDatabase extends JFrame implements ActionListener {
         double weight = Double.parseDouble(weightText);
 
         // database URL
-        final String DATABASE_URL = "jdbc:mysql://localhost/mealplanner";
+        final String DATABASE_URL = "jdbc:mysql://localhost/MealPlannerApp";
         Connection connection = null;
         PreparedStatement pstat = null;
         String ForeName = ForeNameField.getText();
         String SurName = SurNameField.getText();
         String GenderValue = maleRadio.isSelected() ? "Male" : "Female";
+        String dietaryProblem = dietaryProblemComboBox.getSelectedItem().toString();
+
         int i = 0;
         try
         {
             // establish connection to database
             connection = DriverManager.getConnection(DATABASE_URL, "root", "12July98");
             // create Prepared Statement for inserting data into table
-            pstat = connection.prepareStatement("INSERT INTO register (ForeName, SurName, Age, Gender, Weight) VALUES (?,?,?,?,?)");
+            pstat = connection.prepareStatement("INSERT INTO Register (FirstName, SurName, Age, Gender, Weight, DietaryProblem) VALUES (?,?,?,?,?,?)");
             pstat.setString(1, ForeName);
             pstat.setString(2, SurName);
             pstat.setInt(3, userAge);
             pstat.setString(4, GenderValue);
             pstat.setDouble(5, weight);
+            pstat.setString(6,dietaryProblem);
 
             i = pstat.executeUpdate();
             JOptionPane.showMessageDialog(this, i + " record successfully added to the database table.");
