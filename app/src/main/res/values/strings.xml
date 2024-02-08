@@ -3,4 +3,7 @@
     <string name="insert">Insert</string>
     <string name="Firstname">Firstname</string>
     <string name="Surname">Surname</string>
+    <string name="Dinner">Dinner</string>
+    <string name="Lunch">Lunch</string>
+    <string name="Breakfast">Breakfast</string>
 </resources>

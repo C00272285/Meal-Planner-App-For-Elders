@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout"
@@ -7,50 +7,74 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/userforename"
-        android:layout_width="match_parent"
+    <!-- Adding the CalendarView  -->
+    <CalendarView
+        android:id="@+id/calendarView2"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:autofillHints="name"
-        android:hint="@string/Firstname"
-        android:inputType="text"
-        android:padding="16dp"
-        android:textColor="#E7CD38"
-        app:layout_constraintBottom_toTopOf="@+id/usersurname"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/breakfast"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Breakfast Text -->
     <EditText
-        android:id="@+id/usersurname"
-        android:layout_width="match_parent"
+        android:id="@+id/breakfast"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:autofillHints="name"
-        android:hint="@string/Surname"
+        android:layout_marginTop="16dp"
+        android:hint="@string/Breakfast"
         android:inputType="text"
         android:padding="16dp"
         android:textColor="#E7CD38"
-        app:layout_constraintBottom_toTopOf="@+id/insertdata"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/calendarView2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:autofillHints="" />
 
+    <!-- Lunch Text -->
+    <EditText
+        android:id="@+id/lunch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="@string/Lunch"
+        android:inputType="text"
+        android:padding="16dp"
+        android:textColor="#E7CD38"
+        app:layout_constraintTop_toBottomOf="@id/breakfast"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:autofillHints="" />
 
+    <!-- Dinner Text -->
+    <EditText
+        android:id="@+id/dinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="@string/Dinner"
+        android:inputType="text"
+        android:padding="16dp"
+        android:textColor="#E7CD38"
+        app:layout_constraintTop_toBottomOf="@id/lunch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:autofillHints="" />
+
+    <!-- Button for Data Insertion -->
     <Button
         android:id="@+id/insertdata"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:autofillHints="name"
-        android:hint="@string/insert"
+        android:layout_marginTop="16dp"
+        android:text="@string/insert"
         android:padding="16dp"
-        android:textColor="#E7CD38"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/dinner"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,23 +1,45 @@
 package com.example.design;
 
-public class User {
 
-    private String firstname;
-    private String surname;
+public class User
+{
+    //variables for the setters and getters
+    private String breakfast;
+    private String lunch;
 
-    public String getFirstname() {
-        return firstname;
+    private String dinner;
+    private String date;
+
+
+    public String getBreakfast() {
+        return breakfast;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setBreakfast(String breakfast) {
+        this.breakfast = breakfast;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getLunch() {
+        return lunch;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setLunch(String lunch) {
+        this.lunch = lunch;
+    }
+
+    public String getDinner() {
+        return dinner;
+    }
+
+    public void setDinner(String dinner) {
+        this.dinner = dinner;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
