@@ -2,9 +2,8 @@ package com.example.design;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.view.View;
+//import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -13,52 +12,39 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+//import java.net.URL;
+
 public class MainActivity extends AppCompatActivity {
+    EditText firstname, surname;
+    Button submit;
 
-    Button btnInsert;
-    EditText foreName;
-    EditText surName;
-
-     DatabaseReference MealPlanner;
+    DatabaseReference ref;
+    User user;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);//This connects to the XML File
+        setContentView(R.layout.activity_main);
 
+        firstname = findViewById(R.id.userforename);
+        surname = findViewById(R.id.usersurname);
+        submit = findViewById(R.id.insertdata);
+        user = new User();
 
+        // Connect to Firebase Realtime Database in the Belgium region
+        ref = FirebaseDatabase.getInstance("https://mealplanner-a23cb-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("User");
 
-        btnInsert = findViewById(R.id.insertdata);
-        foreName = findViewById(R.id.userforename);
-        surName = findViewById(R.id.usersurname);
-
-        MealPlanner = FirebaseDatabase.getInstance().getReference().child("Users");
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
-
-        myRef.setValue("Hello, World!");
-
-
-        btnInsert.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                InsertUserData();
-            }
+        submit.setOnClickListener(v -> {
+            user.setFirstname(firstname.getText().toString().trim());
+            user.setSurname(surname.getText().toString().trim());
+            ref.push().setValue(user);
+            Toast.makeText(MainActivity.this, "Data has been sent", Toast.LENGTH_LONG).show();
         });
     }
 
-    private void InsertUserData(){
-        String ForeName = foreName.getText().toString();
-        String SurName = surName.getText().toString();
 
-        Users users = new Users(ForeName,SurName);
 
-        MealPlanner.push().setValue(users);
-        Toast.makeText(this, "Data Inserted", Toast.LENGTH_SHORT).show();
-
-    }
 
 
 
