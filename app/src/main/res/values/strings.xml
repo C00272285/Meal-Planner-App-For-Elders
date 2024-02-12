@@ -6,4 +6,6 @@
     <string name="Dinner">Dinner</string>
     <string name="Lunch">Lunch</string>
     <string name="Breakfast">Breakfast</string>
+    <string name="date">Date</string>
+
 </resources>

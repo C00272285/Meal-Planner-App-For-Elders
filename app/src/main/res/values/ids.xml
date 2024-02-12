@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="dinner" type="id" />
+    <item name="nextButton" type="id" />
+    <item name="textView" type="id" />
+    <item name="previousButton" type="id" />
+    <item name="breakfast" type="id" />
+    <item name="lunch" type="id" />
+    <item name="button" type="id" />
+</resources>
