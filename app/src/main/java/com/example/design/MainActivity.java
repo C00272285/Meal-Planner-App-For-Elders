@@ -1,106 +1,102 @@
 package com.example.design;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-
-import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-    private TextView textView;
-    private EditText dinner, lunch, breakfast;
-    private Calendar calendar;
-    private DatabaseReference ref;
-    private Button insert;
-    private User user;
+public class MainActivity extends AppCompatActivity
+{
+
+    private TextView tvCalories, tvFats, tvProteins, tvFiber, tvSugars;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize views
-        textView = findViewById(R.id.textView);
-        ImageView previousButton = findViewById(R.id.previousButton);
-        ImageView nextButton = findViewById(R.id.nextButton);
-        dinner = findViewById(R.id.dinner);
-        breakfast = findViewById(R.id.breakfast);
-        lunch = findViewById(R.id.lunch);
-        insert = findViewById(R.id.button);
+        // reference the UI from the XML File
+        EditText etFoodName = findViewById(R.id.etFoodName);
+        Button btnFetchNutrition = findViewById(R.id.btnFetchNutrition);
+        tvCalories = findViewById(R.id.tvCalories);
+        tvFats = findViewById(R.id.tvFats);
+        tvProteins = findViewById(R.id.tvProteins);
+        tvFiber = findViewById(R.id.tvFiber);
+        tvSugars = findViewById(R.id.tvSugars);
 
-        // Initialize Calendar instance
-        calendar = Calendar.getInstance();
+        RequestManager requestManager = RequestManager.getInstance();
+        btnFetchNutrition.setOnClickListener(v ->
+        {
+            final int ingredientId = 9266;  //the id for Pineapple.
+            final int amount = 1;   // the amount of the item
+            final String unit = "g";    // the unit of measurement
 
-        // Set initial text in TextView
-        updateTextView();
-
-        user = new User();
-        ref = FirebaseDatabase.getInstance("https://mealplanner-a23cb-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("Meals");
-
-        // Set click listeners for arrow buttons
-        previousButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Clear text in EditText
-                dinner.setText("");
-                lunch.setText("");
-                breakfast.setText("");
-                calendar.add(Calendar.DAY_OF_MONTH, -1);
-                updateTextView();
-            }
-        });
-
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Clear text in EditText
-                dinner.setText("");
-                lunch.setText("");
-                breakfast.setText("");
-                calendar.add(Calendar.DAY_OF_MONTH, 1);
-                updateTextView();
-            }
-        });
-
-        insert.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String breakfastText = breakfast.getText().toString().trim();
-                String lunchText = lunch.getText().toString().trim();
-                String dinnerText = dinner.getText().toString().trim();
-                String dateText = textView.getText().toString().trim();
-
-                user.setDate(dateText);
-                user.setBreakfast(breakfastText);
-                user.setLunch(lunchText);
-                user.setDinner(dinnerText);
-
-                ref.push().setValue(user); // Pushing user object instead of meal
-
-                Toast.makeText(MainActivity.this, "Data has been sent", Toast.LENGTH_LONG).show();
-            }
+            requestManager.getIngredientInformation(ingredientId, amount, unit, new Callback<SpoonacularIngredient>()
+            {
+                @Override
+                public void onResponse(@NonNull Call<SpoonacularIngredient> call, @NonNull Response<SpoonacularIngredient> response)
+                {
+                    if (response.isSuccessful() && response.body() != null)
+                    {
+                        SpoonacularIngredient ingredient = response.body();
+                        NutritionData nutritionData = ingredient.nutrition;
+                        updateNutritionUI(nutritionData);
+                    } else
+                    {
+                        Toast.makeText(MainActivity.this, "Failed to fetch ingredient information", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                //if there is a problem with the data getting parsed, this error message will pop up on the screen.
+                @Override
+                public void onFailure(@NonNull Call<SpoonacularIngredient> call, @NonNull Throwable t)
+                {
+                    Toast.makeText(MainActivity.this, "Failed to fetch ingredient information: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
         });
     }
+    @SuppressLint("SetTextI18n")
+    private void updateNutritionUI(NutritionData nutritionData)
+    {
+        if (nutritionData != null && nutritionData.getNutrients() != null)
+        {
+            for (Nutrient nutrient : nutritionData.getNutrients())
+            {
+                switch (nutrient.getName())
+                {
+                    //get the Nutrition information for the following.
+                    case "Calories":
+                        tvCalories.setText("Calories: " + nutrient.getAmount() + " " + nutrient.getUnit());
+                        break;
+                    case "Fat":
+                        tvFats.setText("Fats: " + nutrient.getAmount() + " " + nutrient.getUnit());
+                        break;
+                    case "Protein":
+                        tvProteins.setText("Proteins: " + nutrient.getAmount() + " " + nutrient.getUnit());
+                        break;
+                    case "Fiber":
+                        tvFiber.setText("Fiber: " + nutrient.getAmount() + " " + nutrient.getUnit());
+                        break;
+                    case "Sugar":
+                        tvSugars.setText("Sugars: " + nutrient.getAmount() + " " + nutrient.getUnit());
+                        break;
 
-    // Method to update TextView with current day
-    private void updateTextView() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, MMMM dd, yyyy", Locale.getDefault());
-        String formattedDate = dateFormat.format(calendar.getTime());
-        textView.setText(formattedDate);
+                }
+            }
+        } else
+        {
+            //if the data is null then this toast error message will be displayed.
+            Toast.makeText(this, "Nutrition data is null", Toast.LENGTH_SHORT).show();
+        }
     }
 }

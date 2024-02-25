@@ -7,5 +7,12 @@
     <string name="Lunch">Lunch</string>
     <string name="Breakfast">Breakfast</string>
     <string name="date">Date</string>
+    <string name="enter_food_name">Enter food name</string>
+    <string name="fetch_nutrition">Fetch Nutrition</string>
+    <string name="calories">Calories:</string>
+    <string name="fats">Fats:</string>
+    <string name="proteins">Proteins:</string>
+    <string name="fiber">Fiber:</string>
+    <string name="sugars">Sugars:</string>
 
 </resources>
