@@ -47,6 +47,6 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.16.1")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
-
+    implementation("com.squareup.picasso:picasso:2.8")
 
 }

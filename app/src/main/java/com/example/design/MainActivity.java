@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity
         btnFetchNutrition.setOnClickListener(v ->
         {
             final int ingredientId = 9266;  //the id for Pineapple.
-            final int amount = 1;   // the amount of the item
-            final String unit = "g";    // the unit of measurement
+            final int amount = 1600;   // the amount of the item
+            final String unit = "grams";    // the unit of measurement
 
             requestManager.getIngredientInformation(ingredientId, amount, unit, new Callback<SpoonacularIngredient>()
             {

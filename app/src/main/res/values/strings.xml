@@ -14,5 +14,6 @@
     <string name="proteins">Proteins:</string>
     <string name="fiber">Fiber:</string>
     <string name="sugars">Sugars:</string>
+    <string name="menu_item_title">Menu Item Title</string>
 
 </resources>
