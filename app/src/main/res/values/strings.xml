@@ -15,5 +15,13 @@
     <string name="fiber">Fiber:</string>
     <string name="sugars">Sugars:</string>
     <string name="menu_item_title">Menu Item Title</string>
-
+    <string-array name="dietary_options_array">
+        <item>Dairy</item>
+        <item>Peanut</item>
+        <item>Soy</item>
+        <item>Egg</item>
+        <item>Gluten</item>
+        <item>Grain</item>
+        <item>No Dietary Preference</item>
+    </string-array>
 </resources>

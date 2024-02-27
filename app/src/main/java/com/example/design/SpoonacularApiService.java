@@ -25,4 +25,12 @@ public interface SpoonacularApiService {
             @Query("intolerances") String intolerances,
             @Query("apiKey") String apiKey
     );
+
+    @GET("recipes/complexSearch")
+    Call<RecipeSearchResponse>searchRecipesByIntolerance(
+            @Query("query") String query,
+            @Query("excludeIngredients") String excludeIngredients,
+            @Query("intolerances") String intolerances,
+            @Query("apiKey") String apiKey
+    );
 }
