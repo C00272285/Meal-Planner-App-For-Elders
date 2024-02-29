@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- container for the spinner and search bar -->
+    <!-- Container for the back button, spinner, and search bar -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="8dp">
 
-        <!-- the Spinner for different intolerances -->
+        <!-- The Spinner for different intolerances -->
+
+        <Button
+            android:id="@+id/mealPlanButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/mealPlan"/>
+
         <Spinner
             android:id="@+id/spinner_dietary"
             android:layout_width="match_parent"
@@ -27,11 +35,10 @@
             android:inputType="text"/>
     </LinearLayout>
 
-    <!-- allows to scroll through the screen viewing the different meal images -->
+    <!-- Allows scrolling through the screen viewing the different meal images -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
         android:padding="8dp"/>
-</LinearLayout>
+</RelativeLayout>

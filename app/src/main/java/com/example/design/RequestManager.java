@@ -21,6 +21,8 @@ public class RequestManager {
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         httpClient.addInterceptor(logging);
 
+
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -28,6 +30,9 @@ public class RequestManager {
                 .build();
 
         apiService = retrofit.create(SpoonacularApiService.class);
+
+
+
     }
 
     public static RequestManager getInstance()

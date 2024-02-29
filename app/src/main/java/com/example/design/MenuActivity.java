@@ -1,12 +1,14 @@
 package com.example.design;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -24,29 +26,55 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MenuActivity extends AppCompatActivity {
-    private RecyclerView recyclerView;
     private MenuAdapter adapter;
     private List<RecipeSearchResponse.Recipe> recipeList;
     private Spinner intoleranceSpinner;
-    private EditText searchEditText; // EditText for searching
+    private EditText searchEditText;
+    private Button mealPlanButtton;
+
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_item_main);
 
-        recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recipeList = new ArrayList<>();
         adapter = new MenuAdapter(this, recipeList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
         intoleranceSpinner = findViewById(R.id.spinner_dietary);
-        searchEditText = findViewById(R.id.editText_search); // Initialize the EditText
+        searchEditText = findViewById(R.id.editText_search);
+        mealPlanButtton = findViewById(R.id.mealPlanButton);
         setupSpinner();
         setupSearchEditText();
+
+        // creating a button to bring the user to the mealplan screen
+        mealPlanButtton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                MealPlan();
+            }
+        });
+
+
     }
 
-    private void setupSpinner() {
+    //the method that brings the user to the screen
+    public void MealPlan()
+    {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+
+
+    private void setupSpinner()
+    {
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.dietary_options_array, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -57,15 +85,21 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id)
             {
-                filterRecipes();
+                String selectedIntolerance = parentView.getItemAtPosition(position).toString();
+                loadRecipes("", "", selectedIntolerance);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView)
             {
+
             }
         });
+
+
     }
+
+
 
     private void setupSearchEditText()
     {
@@ -74,11 +108,13 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after)
             {
+
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
+
             }
 
             @Override
@@ -89,6 +125,8 @@ public class MenuActivity extends AppCompatActivity {
         });
     }
 
+
+
     private void filterRecipes()
     {
         String query = searchEditText.getText().toString();
@@ -97,15 +135,19 @@ public class MenuActivity extends AppCompatActivity {
         loadRecipes(query, dietQuery, selectedDiet);
     }
 
+
+
     private void loadRecipes(String query, String excludeIngredients, String intolerances)
     {
         RequestManager.getInstance().searchRecipesByIntolerance(query, excludeIngredients, intolerances, new Callback<RecipeSearchResponse>()
-        {
+
+    {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(@NonNull Call<RecipeSearchResponse> call, @NonNull Response<RecipeSearchResponse> response)
             {
-                if (response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful() && response.body() != null)
+                {
                     recipeList.clear();
                     recipeList.addAll(response.body().getResults());
                     adapter.notifyDataSetChanged();

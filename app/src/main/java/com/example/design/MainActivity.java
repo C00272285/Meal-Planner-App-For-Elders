@@ -1,7 +1,9 @@
 package com.example.design;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -28,11 +30,24 @@ public class MainActivity extends AppCompatActivity
         // reference the UI from the XML File
         EditText etFoodName = findViewById(R.id.etFoodName);
         Button btnFetchNutrition = findViewById(R.id.btnFetchNutrition);
+        Button returnrecipes = findViewById(R.id.recipes);
         tvCalories = findViewById(R.id.tvCalories);
         tvFats = findViewById(R.id.tvFats);
         tvProteins = findViewById(R.id.tvProteins);
         tvFiber = findViewById(R.id.tvFiber);
         tvSugars = findViewById(R.id.tvSugars);
+
+        returnrecipes.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Returnrecipes();
+            }
+        });
+
+
+
 
         RequestManager requestManager = RequestManager.getInstance();
         btnFetchNutrition.setOnClickListener(v ->
@@ -65,6 +80,13 @@ public class MainActivity extends AppCompatActivity
             });
         });
     }
+
+    public void Returnrecipes()
+    {
+        Intent intent = new Intent(this, MenuActivity.class);
+        startActivity(intent);
+    }
+
     @SuppressLint("SetTextI18n")
     private void updateNutritionUI(NutritionData nutritionData)
     {
