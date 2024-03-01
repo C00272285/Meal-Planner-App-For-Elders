@@ -1,28 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="8dp">
 
-    <!-- image of the food -->
-    <ImageView
-        android:id="@+id/imageView_menu_item"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher_background" />
+    <!-- Container for the image and text -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical">
 
-    <!-- the name of the food item -->
-    <TextView
-        android:id="@+id/textView_menu_title"
+        <ImageView
+            android:id="@+id/imageView_menu_item"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher_background" />
+
+        <TextView
+            android:id="@+id/textView_menu_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/menu_item_title"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <!-- Button to add to main -->
+    <Button
+        android:id="@+id/btnAddToMain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="16dp"
-        android:text="@string/menu_item_title"
-        android:textSize="18sp" />
-
+        android:text="@string/Add"
+        android:layout_gravity="center_vertical" />
 
 </LinearLayout>
