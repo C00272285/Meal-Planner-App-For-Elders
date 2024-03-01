@@ -3,15 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- Button aligned to the bottom center of the RelativeLayout -->
+    <Button
+        android:id="@+id/mealPlanButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/mealPlan"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Spinner placed above the Button -->
+    <Spinner
+        android:id="@+id/spinner_dietary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/mealPlanButton"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- RecyclerView fills the space above the Spinner -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/spinner_dietary"
         android:padding="8dp" />
-
-    <Spinner
-        android:id="@+id/spinner_dietary"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
 </RelativeLayout>

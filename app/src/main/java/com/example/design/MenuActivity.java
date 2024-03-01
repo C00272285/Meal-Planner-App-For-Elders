@@ -1,10 +1,12 @@
 package com.example.design;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -26,54 +28,49 @@ public class MenuActivity extends AppCompatActivity
     private MenuAdapter adapter;
     private List<RecipeSearchResponse.Recipe> recipeList;
     private Spinner intoleranceSpinner;
+    private Button button;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        //connecting to the data on the menu_item_main.
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_item_main);
+
         recyclerView = findViewById(R.id.recyclerView);
         recipeList = new ArrayList<>();
         adapter = new MenuAdapter(this, recipeList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+
         intoleranceSpinner = findViewById(R.id.spinner_dietary);
 
-        //this is for the spinner which allows the user to select a food based off of diet.
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        //Setup the spinner adapter and listener
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.dietary_options_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        intoleranceSpinner.setAdapter(adapter);
-
-
-        intoleranceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        intoleranceSpinner.setAdapter(spinnerAdapter);
+        intoleranceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            //loads the screen with the different meals available based off of of the users intolerances.
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id)
-            {
-                String selectedDiet = parentView.getItemAtPosition(position).toString();
-                if (selectedDiet.equals("No Dietary Preference"))
-                {
-                    // Load recipes without any dietary filter
-                    loadRecipes("");
-                } else {
-                    // Load recipes with the selected dietary filter
-                    loadRecipes(selectedDiet);
-                }
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // Handle selection
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parentView)
-            {
-
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // Handle no selection
             }
         });
 
-
-        loadRecipes(""); //a food query, left black to not search for a specific food.
+        // Corrected button reference
+        button = findViewById(R.id.mealPlanButton);
+        button.setOnClickListener(v -> MealPlan());
+        loadRecipes(""); //A food query, left black to not search for a specific food.
     }
+
+    public void MealPlan() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
 
     private void loadRecipes(String query)
     {
