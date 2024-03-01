@@ -21,27 +21,25 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MenuActivity extends AppCompatActivity
+public class MenuActivity extends AppCompatActivity implements MenuAdapter.RecipeListener
 {
-    //variables to use for connecting to the XML file
-    private RecyclerView recyclerView;
     private MenuAdapter adapter;
     private List<RecipeSearchResponse.Recipe> recipeList;
-    private Spinner intoleranceSpinner;
-    private Button button;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_item_main);
 
-        recyclerView = findViewById(R.id.recyclerView);
+        //variables to use for connecting to the XML file
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recipeList = new ArrayList<>();
-        adapter = new MenuAdapter(this, recipeList);
+        adapter = new MenuAdapter(this, recipeList, this); // Pass 'this' as RecipeListener
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        intoleranceSpinner = findViewById(R.id.spinner_dietary);
+        Spinner intoleranceSpinner = findViewById(R.id.spinner_dietary);
 
         //Setup the spinner adapter and listener
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
@@ -51,19 +49,23 @@ public class MenuActivity extends AppCompatActivity
         intoleranceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                // Handle selection
+
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
-                // Handle no selection
+
             }
         });
 
         // Corrected button reference
-        button = findViewById(R.id.mealPlanButton);
+        Button button = findViewById(R.id.mealPlanButton);
         button.setOnClickListener(v -> MealPlan());
-        loadRecipes(""); //A food query, left black to not search for a specific food.
+        loadRecipes(); //A food query, left black to not search for a specific food.
+
+
+
+
     }
 
     public void MealPlan() {
@@ -72,9 +74,18 @@ public class MenuActivity extends AppCompatActivity
     }
 
 
-    private void loadRecipes(String query)
+    @Override
+    public void onRecipeSelected(String recipeName, String mealTime) {
+        Intent intent = new Intent(MenuActivity.this, MainActivity.class);
+        intent.putExtra("", recipeName);
+        startActivity(intent);
+    }
+
+
+
+    private void loadRecipes()
     {
-        RequestManager.getInstance().searchRecipesByIntolerance(query, "", "", new Callback<RecipeSearchResponse>() //will get the meals based off of the users intolerances.
+        RequestManager.getInstance().searchRecipesByIntolerance("", "", "", new Callback<RecipeSearchResponse>() //will get the meals based off of the users intolerances.
         {
             @SuppressLint("NotifyDataSetChanged")
             @Override
@@ -93,4 +104,7 @@ public class MenuActivity extends AppCompatActivity
         });
 
     }
+
+
+
 }

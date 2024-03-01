@@ -16,8 +16,10 @@ import java.util.Calendar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.Locale;
+import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MenuAdapter.RecipeListener
+{
 
     private TextView textView;
     private EditText dinner, lunch, breakfast;
@@ -27,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private User user;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -40,11 +43,12 @@ public class MainActivity extends AppCompatActivity {
         lunch = findViewById(R.id.lunch);
         insert = findViewById(R.id.button);
         Recipes = findViewById(R.id.Recipes);
+        handleIntent(getIntent());
 
 
         Recipes.setOnClickListener(v -> RecipesView());
 
-        // Initialize Calendar instance and set initial text in TextView
+        //Initialize Calendar instance and set initial text in TextView
         calendar = Calendar.getInstance();
         updateTextView();
 
@@ -52,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         user = new User();
         ref = FirebaseDatabase.getInstance("https://mealplanner-a23cb-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("Meals");
 
-        // Previous and Next button listeners
+
         previousButton.setOnClickListener(v -> {
             // Clear text in EditTexts and update the calendar
             clearEditTexts();
@@ -67,24 +71,60 @@ public class MainActivity extends AppCompatActivity {
             updateTextView();
         });
 
-        insert.setOnClickListener(v -> {
-
-            insertData();
-        });
+        insert.setOnClickListener(v -> insertData());
     }
 
-    private void RecipesView() {
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        Intent intent = getIntent();
+        handleIntent(intent);
+    }
+
+
+    private void handleIntent(Intent intent)
+    {
+        if (intent != null && intent.hasExtra("") && intent.hasExtra(""))
+        {
+            String recipeName = intent.getStringExtra("");
+            String mealTime = intent.getStringExtra("");
+
+            switch (Objects.requireNonNull(mealTime))
+            {
+                case "Breakfast":
+                    breakfast.setText(recipeName);
+                    break;
+                case "Lunch":
+                    lunch.setText(recipeName);
+                    break;
+                case "Dinner":
+                    dinner.setText(recipeName);
+                    break;
+                default:
+                    Toast.makeText(this, "Invalid meal time", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    }
+
+
+
+    private void RecipesView()
+    {
         Intent intent = new Intent(MainActivity.this, MenuActivity.class);
         startActivity(intent);
     }
 
-    private void clearEditTexts() {
+    private void clearEditTexts()
+    {
         dinner.setText("");
         lunch.setText("");
         breakfast.setText("");
     }
 
-    private void insertData() {
+    private void insertData()
+    {
         // Code to insert data to Firebase
         String breakfastText = breakfast.getText().toString().trim();
         String lunchText = lunch.getText().toString().trim();
@@ -106,4 +146,18 @@ public class MainActivity extends AppCompatActivity {
         String formattedDate = dateFormat.format(calendar.getTime());
         textView.setText(formattedDate);
     }
+
+    @Override
+    public void onRecipeSelected(String recipeName, String mealTime)
+    {
+        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+        intent.putExtra("", recipeName);
+        intent.putExtra("", mealTime);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+    }
+
+
+
+
 }
