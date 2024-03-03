@@ -83,15 +83,14 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.Recip
     }
 
 
-    private void handleIntent(Intent intent)
-    {
-        if (intent != null && intent.hasExtra("") && intent.hasExtra(""))
+    private void handleIntent(Intent intent) {
+        if (intent != null && intent.hasExtra("RECIPE_NAME") && intent.hasExtra("MEAL_TIME"))
         {
-            String recipeName = intent.getStringExtra("");
-            String mealTime = intent.getStringExtra("");
+            //these two lines needed to be connected to the MenuActivty in order to send data selected from MenuActivity to the MainActivity
+            String recipeName = intent.getStringExtra("RECIPE_NAME");
+            String mealTime = intent.getStringExtra("MEAL_TIME");
 
-            switch (Objects.requireNonNull(mealTime))
-            {
+            switch (Objects.requireNonNull(mealTime)) {
                 case "Breakfast":
                     breakfast.setText(recipeName);
                     break;
@@ -107,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.Recip
             }
         }
     }
+
 
 
 
@@ -148,16 +148,11 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.Recip
     }
 
     @Override
-    public void onRecipeSelected(String recipeName, String mealTime)
-    {
+    public void onRecipeSelected(String recipeName, String mealTime) {
         Intent intent = new Intent(MainActivity.this, MainActivity.class);
-        intent.putExtra("", recipeName);
-        intent.putExtra("", mealTime);
+        intent.putExtra("RECIPE_NAME", recipeName);
+        intent.putExtra("MEAL_TIME", mealTime);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
-
-
-
-
 }

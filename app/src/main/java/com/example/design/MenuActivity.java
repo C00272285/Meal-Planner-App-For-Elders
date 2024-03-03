@@ -73,13 +73,16 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.Recip
         startActivity(intent);
     }
 
-
+    //had to have the intent.putExtra to have a String name to be able to add meals to the MainActivity class.
     @Override
-    public void onRecipeSelected(String recipeName, String mealTime) {
+    public void onRecipeSelected(String recipeName, String mealTime)
+    {
         Intent intent = new Intent(MenuActivity.this, MainActivity.class);
-        intent.putExtra("", recipeName);
+        intent.putExtra("RECIPE_NAME", recipeName);
+        intent.putExtra("MEAL_TIME", mealTime);
         startActivity(intent);
     }
+
 
 
 
