@@ -15,14 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
-public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
+public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
+{
 
     private final Context context;
     private final List<RecipeSearchResponse.Recipe> recipeList;
     private final RecipeListener listener;
 
-    // Corrected constructor to include RecipeListener
-    public MenuAdapter(Context context, List<RecipeSearchResponse.Recipe> recipeList, RecipeListener listener) {
+
+    public MenuAdapter(Context context, List<RecipeSearchResponse.Recipe> recipeList, RecipeListener listener)
+    {
         this.context = context;
         this.recipeList = recipeList;
         this.listener = listener;
@@ -31,13 +33,15 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.menu_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position)
+    {
         RecipeSearchResponse.Recipe recipe = recipeList.get(position);
         holder.textViewTitle.setText(recipe.title);
         Picasso.get().load(recipe.image).into(holder.imageViewItem);
@@ -52,12 +56,14 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
         return recipeList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder
+    {
         public ImageView imageViewItem;
         public TextView textViewTitle;
         public Button btnAddToMain;
 
-        public ViewHolder(View view) {
+        public ViewHolder(View view)
+        {
             super(view);
             imageViewItem = view.findViewById(R.id.imageView_menu_item);
             textViewTitle = view.findViewById(R.id.textView_menu_title);
@@ -65,15 +71,18 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
         }
     }
 
-    public interface RecipeListener {
+    public interface RecipeListener
+    {
         void onRecipeSelected(String recipeName, String mealTime);
     }
 
-    private void showMealTimeDialog(String recipeName) {
+    private void showMealTimeDialog(String recipeName)
+    {
         final String[] mealTimes = {"Breakfast", "Lunch", "Dinner"};
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Add to Meal")
-                .setItems(mealTimes, (dialog, which) -> {
+                .setItems(mealTimes, (dialog, which) ->
+                {
                     String mealTime = mealTimes[which];
                     if(listener != null) {
                         listener.onRecipeSelected(recipeName, mealTime);

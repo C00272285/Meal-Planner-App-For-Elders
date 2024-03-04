@@ -19,7 +19,6 @@
     <string name="mealPlan"> MealPlan</string>
     <string name="new_button_text"> Recipes</string>
     <string name="Add">ADD</string>
-    <string name="Recipies">"Recipies "</string>
     <string name="Recipes">Recipes</string>
     <string-array name="dietary_options_array">
         <item>Dairy</item>
