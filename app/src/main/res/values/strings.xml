@@ -20,6 +20,15 @@
     <string name="new_button_text"> Recipes</string>
     <string name="Add">ADD</string>
     <string name="Recipes">Recipes</string>
+    <string name="surname">Surname</string>
+    <string name="email_address">Email Address</string>
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="name">Name</string>
+    <string name="submit">Submit</string>
+    <string name="Password">Password</string>
+    <string name="Login">Login</string>
+    <string name="Register">Register</string>
+    <string name="Click_To_Log_IN">CLick To Log In</string>
     <string-array name="dietary_options_array">
         <item>Dairy</item>
         <item>Peanut</item>
@@ -29,4 +38,16 @@
         <item>Grain</item>
         <item>No Dietary Preference</item>
     </string-array>
+
+    <string-array name="intolerance_options">
+        <item>Dairy</item>
+        <item>Peanut</item>
+        <item>Soy</item>
+        <item>Egg</item>
+        <item>Gluten</item>
+        <item>Grain</item>
+        <item>No Dietary Preference</item>
+    </string-array>
+
+
 </resources>
