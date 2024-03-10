@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.Recip
     private EditText dinner, lunch, breakfast;
     private Calendar calendar;
     private DatabaseReference ref;
+
     private User user;  // used for the Firestore database names the database user
 
     @Override
@@ -70,6 +71,17 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.Recip
         });
 
         insert.setOnClickListener(v -> insertData());
+
+
+        Button viewHistoryButton = findViewById(R.id.viewHistoryButton);
+        viewHistoryButton.setOnClickListener(v ->
+        {
+            Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+            startActivity(intent);
+        });
+
+
+
     }
 
     @Override

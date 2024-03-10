@@ -29,6 +29,10 @@
     <string name="Login">Login</string>
     <string name="Register">Register</string>
     <string name="Click_To_Log_IN">CLick To Log In</string>
+    <string name="Click_To_REGISTER">Click To Register</string>
+    <string name="view_history">View History</string>
+    <string name="meal_history_for_the_day">Meal history for the day</string>
+    <string name="HistoryDate">Date</string>
     <string-array name="dietary_options_array">
         <item>Dairy</item>
         <item>Peanut</item>
@@ -39,7 +43,7 @@
         <item>No Dietary Preference</item>
     </string-array>
 
-    <string-array name="intolerance_options">
+    <string-array name="intoleranceSpinner">
         <item>Dairy</item>
         <item>Peanut</item>
         <item>Soy</item>
