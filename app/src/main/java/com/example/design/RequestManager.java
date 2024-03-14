@@ -1,5 +1,7 @@
 package com.example.design;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import okhttp3.OkHttpClient;
@@ -55,6 +57,14 @@ public class RequestManager {
         Call<RecipeSearchResponse> call = apiService.searchRecipesByIntolerance(query, excludeIngredients, intolerances, API_KEY);
         call.enqueue(callback);
     }
+
+    public void getAnalyzedRecipeInstructions(int recipeId, boolean stepBreakdown, Callback<List<AnalyzedInstruction>> callback) {
+        Call<List<AnalyzedInstruction>> call = apiService.getAnalyzedRecipeInstructions(recipeId, API_KEY, stepBreakdown);
+        call.enqueue(callback);
+    }
+
+
+
     public static String getApiKey()
     {
         return API_KEY;

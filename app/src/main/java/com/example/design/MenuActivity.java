@@ -39,9 +39,22 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.Recip
         // setting up RecyclerView to display the list of Meals
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recipeList = new ArrayList<>();
-        adapter = new MenuAdapter(this, recipeList, this);
+        adapter = new MenuAdapter(recipeList, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+
+        adapter.setOnMealClickListener(new MenuAdapter.OnMealClickListener() {
+            @Override
+            public void onMealClick(RecipeSearchResponse.Recipe recipe) {
+                // Intent to start MealDetailActivity with recipe ID
+                Intent detailIntent = new Intent(MenuActivity.this, MealInfo.class);
+                detailIntent.putExtra("MEAL_ID", recipe.id); // Pass recipe ID
+                detailIntent.putExtra("MEAL_TITLE", recipe.title); // Pass title for display
+                detailIntent.putExtra("IMAGE_URL", recipe.image);
+                startActivity(detailIntent);
+            }
+        });
+
 
         // Setting up the Spinner for selecting intolerances
         Spinner intoleranceSpinner = findViewById(R.id.spinner_dietary);
@@ -81,7 +94,7 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.Recip
         returnIntent.putExtra("RECIPE_NAME", recipeName);
         returnIntent.putExtra("MEAL_TIME", mealTime);
         setResult(Activity.RESULT_OK, returnIntent);
-        finish(); // This will close MenuActivity and return to MainActivity
+        finish();
     }
     private void loadRecipes()
     {

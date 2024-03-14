@@ -1,5 +1,7 @@
 package com.example.design;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -33,4 +35,11 @@ public interface SpoonacularApiService {
             @Query("intolerances") String intolerances,
             @Query("apiKey") String apiKey
     );
+
+    @GET("recipes/{id}/analyzedInstructions")
+    Call<List<AnalyzedInstruction>> getAnalyzedRecipeInstructions
+            (
+            @Path("id") int recipeId,
+            @Query("apiKey") String apiKey,
+            @Query("stepBreakdown") boolean stepBreakdown);
 }

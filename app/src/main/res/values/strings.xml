@@ -33,6 +33,10 @@
     <string name="view_history">View History</string>
     <string name="meal_history_for_the_day">Meal history for the day</string>
     <string name="HistoryDate">Date</string>
+    <string name="return_to_menu">Return To Menu</string>
+    <string name="meal_title">Meal Title</string>
+    <string name="meal_description">Meal Description</string>
+    <string name="cooking_instructions">Cooking Instructions</string>
     <string-array name="dietary_options_array">
         <item>Dairy</item>
         <item>Peanut</item>

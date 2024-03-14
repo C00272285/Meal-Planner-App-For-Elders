@@ -22,11 +22,17 @@ public class RecipeSearchResponse
         String image;
     }
 
-    public List<Recipe> getResults() {
+    public List<Recipe> getResults()
+    {
         return results;
     }
 
     public void setResults(List<Recipe> results) {
         this.results = results;
     }
+
+
+
+
+
 }
