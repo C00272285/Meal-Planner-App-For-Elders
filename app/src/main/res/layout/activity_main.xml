@@ -125,5 +125,18 @@
         app:layout_constraintTop_toBottomOf="@+id/dinner"
         app:layout_constraintVertical_bias="0.0" />
 
+    <TextView
+        android:id="@+id/loggedInUserTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User: "
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"/>
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

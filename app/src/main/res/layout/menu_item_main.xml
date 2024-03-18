@@ -29,4 +29,13 @@
         android:layout_above="@id/spinner_dietary"
         android:padding="8dp" />
 
+    <Button
+        android:id="@+id/signOutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/mealPlanButton"
+        android:layout_marginBottom="-48dp"
+        android:text="@string/sign_out" />
+
+
 </RelativeLayout>

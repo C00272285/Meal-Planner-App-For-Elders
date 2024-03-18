@@ -27,6 +27,23 @@
             android:layout_marginTop="8dp"
             android:text="@string/menu_item_title"
             android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/servingSizeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Serving Size"/>
+
+        <TextView
+            android:id="@+id/servingTimeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Cooking Time"/>
+
+
+
     </LinearLayout>
 
     <!-- Button to add to main -->

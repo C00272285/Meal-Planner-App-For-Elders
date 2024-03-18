@@ -1,5 +1,4 @@
 package com.example.design;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,27 +9,21 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Register extends AppCompatActivity {
 
     private EditText EmailAddress, Password;
     private Spinner intoleranceSpinner;
-    private Button SubmitBTN;
     private ProgressBar ProgressBar;
 
     private FirebaseAuth mAuth;
-    private DatabaseReference userRef;
-    private TextView LoginNow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,28 +32,22 @@ public class Register extends AppCompatActivity {
 
         // Initialize FirebaseAuth instance
         mAuth = FirebaseAuth.getInstance();
-        // Reference to your Firebase Realtime Database
-        userRef = FirebaseDatabase.getInstance().getReference("users");
+        FirebaseDatabase.getInstance().getReference("users");
 
         // Initialize UI components
         EmailAddress = findViewById(R.id.emailregister);
         Password = findViewById(R.id.password);
         intoleranceSpinner = findViewById(R.id.intoleranceSpinner);
-        SubmitBTN = findViewById(R.id.submitBtn);
+        Button submitBTN = findViewById(R.id.submitBtn);
         ProgressBar = findViewById(R.id.progressBar);
+        TextView loginNow = findViewById(R.id.loginNow);
 
-
-
-        LoginNow = findViewById(R.id.loginNow);
-
-// Setting click listener to navigate to the Login activity
-        LoginNow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Intent to navigate from Register to Login activity
-                Intent intent = new Intent(Register.this, Login.class);
-                startActivity(intent);
-            }
+        // Setting click listener to navigate to the Login activity
+        loginNow.setOnClickListener(v -> {
+            // Intent to navigate from Register to Login activity
+            Intent intent = new Intent(Register.this, Login.class);
+            startActivity(intent);
+            finish();
         });
 
         // Setup Spinner for intolerance
@@ -69,7 +56,8 @@ public class Register extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         intoleranceSpinner.setAdapter(adapter);
 
-        SubmitBTN.setOnClickListener(v -> {
+        submitBTN.setOnClickListener(v ->
+        {
             ProgressBar.setVisibility(View.VISIBLE);
             String email = EmailAddress.getText().toString().trim();
             String password = Password.getText().toString().trim();
@@ -84,53 +72,58 @@ public class Register extends AppCompatActivity {
         });
     }
 
-    private boolean validateForm(String email, String password) {
-        if (email.isEmpty()) {
+    private boolean validateForm(String email, String password)
+    {
+        if (email.isEmpty())
+        {
             Toast.makeText(Register.this, "Email is required.", Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        if (password.isEmpty()) {
+        if (password.isEmpty())
+        {
             Toast.makeText(Register.this, "Password is required.", Toast.LENGTH_SHORT).show();
             return false;
         }
-
         return true;
     }
 
-    private void registerUser(String email, String password, String intolerance) {
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
+    private void registerUser(String email, String password, String intolerance)
+    {
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task ->
+        {
             if (task.isSuccessful()) {
-                // Sign in success
                 FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null) {
-                    updateUserInformation(user.getUid(), email, intolerance);
+                    // Encode the email address
+                    String encodedEmail = email.replace(".", ",");
+                    DatabaseReference userRefWithEmail = FirebaseDatabase.getInstance("https://mealplanner-a23cb-default-rtdb.europe-west1.firebasedatabase.app/")
+                            .getReference("Users").child(encodedEmail);
+                    HashMap<String, Object> userData = new HashMap<>();
+                    userData.put("email", email); // Storing the email
+                    userData.put("intolerance", intolerance); // Storing intolerance preference
+
+                    userRefWithEmail.setValue(userData).addOnCompleteListener(task1 ->
+                    {
+                        if (task1.isSuccessful())
+                        {
+                            Toast.makeText(Register.this, "Registration successful!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(Register.this, Login.class);
+                            startActivity(intent);
+                            finish(); // Finish the current activity
+                        } else
+                        {
+                            Toast.makeText(Register.this, "Failed to store user information. Error: " + Objects.requireNonNull(task1.getException()).getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
-            } else {
-                // If sign in fails, display a message to the user.
-                Toast.makeText(Register.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                ProgressBar.setVisibility(View.INVISIBLE);
+            } else
+            {
+                Toast.makeText(Register.this, "Registration failed. Error: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
 
-    private void updateUserInformation(String userId, String email, String intolerance) {
-        HashMap<String, Object> userData = new HashMap<>();
-        userData.put("email", email);
-        userData.put("intolerance", intolerance);
 
-        userRef.child(userId).setValue(userData).addOnCompleteListener(task -> {
-            ProgressBar.setVisibility(View.INVISIBLE);
-            Intent intent = new Intent(Register.this, Login.class);
-            startActivity(intent);
-            finish(); // Finish the current activity
-            if (task.isSuccessful()) {
-                Toast.makeText(Register.this, "User registration successful.", Toast.LENGTH_SHORT).show();
-                // Intent to navigate to the Login screen
 
-            } else {
-                Toast.makeText(Register.this, "Failed to save user data.", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 }
