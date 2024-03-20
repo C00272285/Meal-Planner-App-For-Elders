@@ -1,4 +1,5 @@
 package com.example.design;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -9,13 +10,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,20 +39,22 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.Recip
         // setting up RecyclerView to display the list of Meals
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recipeList = new ArrayList<>();
-
-        Button signOutButton = findViewById(R.id.signOutButton);
-        signOutButton.setOnClickListener(v -> {
-            FirebaseAuth.getInstance().signOut(); // Sign out from Firebase
-            Intent intent = new Intent(MenuActivity.this, Login.class); // Assuming you have a LoginActivity
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Clear the activity stack
-            startActivity(intent);
-            finish(); // Finish the current activity
-        });
-
-
-        adapter = new MenuAdapter(this, recipeList, this);
+        adapter = new MenuAdapter(recipeList, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+
+        adapter.setOnMealClickListener(new MenuAdapter.OnMealClickListener() {
+            @Override
+            public void onMealClick(RecipeSearchResponse.Recipe recipe) {
+                // Intent to start MealDetailActivity with recipe ID
+                Intent detailIntent = new Intent(MenuActivity.this, MealInfo.class);
+                detailIntent.putExtra("MEAL_ID", recipe.id); // Pass recipe ID
+                detailIntent.putExtra("MEAL_TITLE", recipe.title); // Pass title for display
+                detailIntent.putExtra("IMAGE_URL", recipe.image);
+                startActivity(detailIntent);
+            }
+        });
+
 
         // Setting up the Spinner for selecting intolerances
         Spinner intoleranceSpinner = findViewById(R.id.spinner_dietary);
@@ -83,7 +87,6 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.Recip
         startActivity(intent);
     }
 
-    //had to have the intent.putExtra to have a String name to be able to add meals to the MainActivity class.
     @Override
     public void onRecipeSelected(String recipeName, String mealTime) {
         Intent returnIntent = new Intent();
@@ -92,6 +95,8 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.Recip
         setResult(Activity.RESULT_OK, returnIntent);
         finish(); // This will close MenuActivity and return to MainActivity
     }
+
+
     private void loadRecipes()
     {
         RequestManager.getInstance().searchRecipesByIntolerance("", "", "", new Callback<RecipeSearchResponse>() //will get the meals based off of the users intolerances.

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -14,32 +14,30 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design"
         tools:targetApi="31">
-
-        <!-- Register Activity -->
+        <activity
+            android:name=".MealInfo"
+            android:exported="false" />
+        <activity
+            android:name=".HistoryActivity"
+            android:exported="false" /> <!-- Register Activity is the new startup screen -->
         <activity
             android:name=".Register"
-            android:exported="true"> <!-- This makes it accessible as an entry point -->
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Main Activity -->
-        <activity
-            android:name=".MainActivity"
-            android:exported="false"/> <!-- No need for intent-filter here if it's not the entry point -->
-        
+        </activity> <!-- LoginActivity -->
         <activity
             android:name=".Login"
-            android:exported="true"/>
-
-        <!-- Menu Activity -->
+            android:exported="true" /> <!-- MainActivity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" /> <!-- MenuActivity -->
         <activity
             android:name=".MenuActivity"
             android:exported="false" />
-
-        <!-- Any other activities you have -->
     </application>
 
 </manifest>

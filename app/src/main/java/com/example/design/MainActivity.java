@@ -95,13 +95,32 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.Recip
     }
 
     @Override
-    // handles any intent when the activity is resumed
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
-        Intent intent = getIntent();
-        handleIntent(intent);
+        // this allows the breakfast, lunch and dinner pop up window to appear and also fixes the add button problem
+        if (getIntent().hasExtra("RECIPE_NAME") && getIntent().hasExtra("MEAL_TIME")) {
+            String recipeName = getIntent().getStringExtra("RECIPE_NAME");
+            String mealTime = getIntent().getStringExtra("MEAL_TIME");
+
+            if (mealTime != null) {
+                switch (mealTime) {
+                    case "Breakfast":
+                        TextView breakfastTextView = findViewById(R.id.breakfast);
+                        breakfastTextView.setText(recipeName);
+                        break;
+                    case "Lunch":
+                        TextView lunchTextView = findViewById(R.id.lunch);
+                        lunchTextView.setText(recipeName);
+                        break;
+                    case "Dinner":
+                        TextView dinnerTextView = findViewById(R.id.dinner);
+                        dinnerTextView.setText(recipeName);
+                        break;
+                }
+            }
+        }
     }
+
 
 
     private void handleIntent(Intent intent)
