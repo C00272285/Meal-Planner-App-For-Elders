@@ -46,9 +46,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
             }
         });
 
-        holder.btnAddToMain.setOnClickListener(v -> {
-            showMealTimeDialog(holder.itemView.getContext(), recipe);
-        });
+        holder.btnAddToMain.setOnClickListener(v -> showMealTimeDialog(holder.itemView.getContext(), recipe));
     }
 
     @Override
@@ -93,4 +91,3 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
         void onRecipeSelected(String recipeName, String mealTime);
     }
 }
-// navigates previous

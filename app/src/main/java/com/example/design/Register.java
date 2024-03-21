@@ -19,8 +19,8 @@ import java.util.Objects;
 
 public class Register extends AppCompatActivity {
 
-    private EditText EmailAddress, Password;
-    private Spinner intoleranceSpinner;
+    private EditText EmailAddress, Password, Height, Weight, Age;
+    private Spinner intoleranceSpinner, GenderSpinner;
     private ProgressBar ProgressBar;
 
     private FirebaseAuth mAuth;
@@ -38,12 +38,17 @@ public class Register extends AppCompatActivity {
         EmailAddress = findViewById(R.id.emailregister);
         Password = findViewById(R.id.password);
         intoleranceSpinner = findViewById(R.id.intoleranceSpinner);
+        Height = findViewById(R.id.height);
+        Weight = findViewById(R.id.weight);
+        Age = findViewById(R.id.age);
+        GenderSpinner = findViewById(R.id.genderSpinner);
         Button submitBTN = findViewById(R.id.submitBtn);
         ProgressBar = findViewById(R.id.progressBar);
         TextView loginNow = findViewById(R.id.loginNow);
 
         // Setting click listener to navigate to the Login activity
-        loginNow.setOnClickListener(v -> {
+        loginNow.setOnClickListener(v ->
+        {
             // Intent to navigate from Register to Login activity
             Intent intent = new Intent(Register.this, Login.class);
             startActivity(intent);
@@ -51,10 +56,14 @@ public class Register extends AppCompatActivity {
         });
 
         // Setup Spinner for intolerance
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.dietary_options_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.dietary_options_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         intoleranceSpinner.setAdapter(adapter);
+
+        // Setup the Spinner for Gender
+        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this, R.array.genderSpinner, android.R.layout.simple_spinner_item);
+        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        GenderSpinner.setAdapter(genderAdapter);
 
         submitBTN.setOnClickListener(v ->
         {
@@ -62,33 +71,52 @@ public class Register extends AppCompatActivity {
             String email = EmailAddress.getText().toString().trim();
             String password = Password.getText().toString().trim();
             String intolerance = intoleranceSpinner.getSelectedItem().toString();
+            String weight = Weight.getText().toString().trim();
+            String height = Height.getText().toString().trim();
+            String age = Age.getText().toString().trim();
+            String gender = GenderSpinner.getSelectedItem().toString();
 
-            if (!validateForm(email, password)) {
+            if (!validateForm(email, password, weight, height, age)) {
                 ProgressBar.setVisibility(View.INVISIBLE);
                 return;
             }
-
-            registerUser(email, password, intolerance);
+            registerUser(email, password, gender, weight, height, age, intolerance);
         });
     }
 
-    private boolean validateForm(String email, String password)
+    private boolean validateForm(String email, String password, String weight, String age, String height)
     {
         if (email.isEmpty())
         {
             Toast.makeText(Register.this, "Email is required.", Toast.LENGTH_SHORT).show();
-            return false;
         }
-
         if (password.isEmpty())
         {
             Toast.makeText(Register.this, "Password is required.", Toast.LENGTH_SHORT).show();
             return false;
         }
-        return true;
+        if (weight.isEmpty())
+        {
+            Toast.makeText(Register.this, "Weight is required.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (height.isEmpty())
+        {
+            Toast.makeText(Register.this, "Height is required.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (age.isEmpty())
+        {
+            Toast.makeText(Register.this, "Age is required.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
-    private void registerUser(String email, String password, String intolerance)
+    private void registerUser(String email, String password, String intolerance, String weight, String height, String age, String gender)
     {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task ->
         {
@@ -97,11 +125,16 @@ public class Register extends AppCompatActivity {
                 if (user != null) {
                     // Encode the email address
                     String encodedEmail = email.replace(".", ",");
-                    DatabaseReference userRefWithEmail = FirebaseDatabase.getInstance("https://mealplanner-a23cb-default-rtdb.europe-west1.firebasedatabase.app/")
-                            .getReference("Users").child(encodedEmail);
+                    DatabaseReference userRefWithEmail = FirebaseDatabase.getInstance("https://mealplanner-a23cb-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Users").child(encodedEmail);
                     HashMap<String, Object> userData = new HashMap<>();
-                    userData.put("email", email); // Storing the email
-                    userData.put("intolerance", intolerance); // Storing intolerance preference
+                    userData.put("Email", email); // Storing the email
+                    userData.put("Intolerance", intolerance); // Storing intolerance preference
+                    userData.put("Height", height); // Storing Users Height
+                    userData.put("Weight", weight); // Storing Users Weight
+                    userData.put("Age", age); // Storing Users Age
+                    userData.put("Gender", gender); // Storing Users Gender
+
+
 
                     userRefWithEmail.setValue(userData).addOnCompleteListener(task1 ->
                     {
