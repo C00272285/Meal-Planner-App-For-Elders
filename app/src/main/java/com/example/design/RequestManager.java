@@ -63,6 +63,13 @@ public class RequestManager {
         call.enqueue(callback);
     }
 
+    public void getRecipeDetails(int recipeId, boolean includeNutrition, Callback<RecipeDetailResponse> callback)
+    {
+        Call<RecipeDetailResponse> call = apiService.getRecipeDetails(recipeId, includeNutrition, API_KEY);
+        call.enqueue(callback);
+    }
+
+
 
 
     public static String getApiKey()

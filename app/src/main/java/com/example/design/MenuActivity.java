@@ -93,7 +93,6 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.Recip
         returnIntent.putExtra("RECIPE_NAME", recipeName);
         returnIntent.putExtra("MEAL_TIME", mealTime);
         setResult(Activity.RESULT_OK, returnIntent);
-        finish(); // This will close MenuActivity and return to MainActivity
     }
 
 

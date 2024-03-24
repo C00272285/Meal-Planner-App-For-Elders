@@ -30,9 +30,4 @@ public class RecipeSearchResponse
     public void setResults(List<Recipe> results) {
         this.results = results;
     }
-
-
-
-
-
 }

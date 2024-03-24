@@ -1,5 +1,6 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,7 +11,7 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/mealTitleTextView"
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="24sp"
@@ -18,23 +19,41 @@
             android:text="@string/meal_title" />
 
         <ImageView
-            android:id="@+id/mealImageView"
+            android:id="@+id/image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:id="@+id/mealDescriptionTextView"
+            android:id="@+id/description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:text="@string/meal_description"/>
 
         <TextView
-            android:id="@+id/mealInstructionsTextView"
+            android:id="@+id/instructions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:text="@string/cooking_instructions"/>
+
+        <TextView
+            android:id="@+id/ingredients"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Ingredients"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Type"
+            tools:ignore="HardcodedText" />
+
+
 
         <Button
             android:id="@+id/toMenuButton"
@@ -42,6 +61,14 @@
             android:layout_height="wrap_content"
             android:text="@string/return_to_menu"
             android:layout_gravity="center_horizontal"/>
+
+        <Button
+            android:id="@+id/addToMealPlanButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/addMeal"
+            android:layout_gravity="center_horizontal"/>
+
 
     </LinearLayout>
 </ScrollView>
