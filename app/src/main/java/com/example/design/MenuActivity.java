@@ -42,7 +42,6 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.Recip
         adapter = new MenuAdapter(recipeList, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-
         adapter.setOnMealClickListener(new MenuAdapter.OnMealClickListener() {
             @Override
             public void onMealClick(RecipeSearchResponse.Recipe recipe) {
@@ -55,6 +54,11 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.Recip
             }
         });
 
+        Button scanButton = findViewById(R.id.scanButton);
+        scanButton.setOnClickListener(v -> {
+            Intent scanIntent = new Intent(MenuActivity.this, ScanActivity.class);
+            startActivity(scanIntent);
+        });
 
         // Setting up the Spinner for selecting intolerances
         Spinner intoleranceSpinner = findViewById(R.id.spinner_dietary);

@@ -46,6 +46,7 @@
     <string name="lunch_ingredients">Lunch Ingredients</string>
     <string name="dinner_ingredients">Dinner Ingredients</string>
     <string name="breakfast_ingredients">Breakfast Ingredients</string>
+    <string name="scan">Scan Food</string>
 
 
     <string-array name="dietary_options_array">

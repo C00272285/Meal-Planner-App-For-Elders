@@ -3,7 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Button aligned to the bottom center of the RelativeLayout -->
+    <!-- Sign Out Button at the top left -->
+    <Button
+        android:id="@+id/signOutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:text="@string/sign_out"
+        android:layout_margin="16dp"/>
+
+    <!-- Meal Plan Button at the bottom center -->
     <Button
         android:id="@+id/mealPlanButton"
         android:layout_width="wrap_content"
@@ -12,30 +22,42 @@
         android:layout_centerHorizontal="true"
         android:text="@string/mealPlan"
         android:layout_marginBottom="16dp"/>
+    <Button
+        android:id="@+id/scanButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/scan"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@id/mealPlanButton"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"/>
 
-    <!-- Spinner placed above the Button -->
+
+
+    <!-- Divider -->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_above="@id/mealPlanButton"
+        android:layout_marginBottom="48dp"/>
+
+    <!-- Spinner below the divider -->
     <Spinner
         android:id="@+id/spinner_dietary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/mealPlanButton"
-        android:layout_marginBottom="16dp"/>
+        android:layout_above="@id/divider"
+        android:layout_marginBottom="8dp"/>
 
-    <!-- RecyclerView fills the space above the Spinner -->
+    <!-- RecyclerView fills the remaining space -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@+id/signOutButton"
         android:layout_above="@id/spinner_dietary"
-        android:padding="8dp" />
-
-    <Button
-        android:id="@+id/signOutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/mealPlanButton"
-        android:layout_marginBottom="-48dp"
-        android:text="@string/sign_out" />
-
+        android:padding="8dp"/>
 
 </RelativeLayout>

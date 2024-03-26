@@ -49,5 +49,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.16.1")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
     implementation("com.squareup.picasso:picasso:2.8")
+    implementation ("com.journeyapps:zxing-android-embedded:4.1.0")
+    implementation ("com.google.zxing:core:3.3.0")
 
 }

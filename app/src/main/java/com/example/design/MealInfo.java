@@ -55,7 +55,7 @@ public class MealInfo extends AppCompatActivity
             @Override
             public void onResponse(@NonNull Call<RecipeDetailResponse> call, @NonNull Response<RecipeDetailResponse> response)
             {
-                Log.d("MealInfo", "API Response: " + new Gson().toJson(response.body()));
+                //Log.d("MealInfo", "API Response: " + new Gson().toJson(response.body()));
                 if (response.isSuccessful() && response.body() != null)
                 {
                     RecipeDetailResponse recipeDetails = response.body();
@@ -113,6 +113,10 @@ public class MealInfo extends AppCompatActivity
         }
         return ingredientsBuilder;
     }
+
+
+
+
 
 
     private void fetchCookingInstructions(int recipeId, TextView textViewInstructions)
