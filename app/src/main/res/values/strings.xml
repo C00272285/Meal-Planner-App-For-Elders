@@ -47,6 +47,19 @@
     <string name="dinner_ingredients">Dinner Ingredients</string>
     <string name="breakfast_ingredients">Breakfast Ingredients</string>
     <string name="scan">Scan Food</string>
+    <string name="nutrients">Nutrients</string>
+    <string name="brand">Brand</string>
+    <string name="product_name">Product Name</string>
+    <string name="energy">Energy</string>
+    <string name="protein">Protein</string>
+    <string name="fat">Fat</string>
+    <string name="energy_format">Energy: %1$.2f kJ</string>
+    <string name="protein_format">Protein: %1$.2f g</string>
+    <string name="sugars_format">Sugars: %1$.2f g</string>
+    <string name="fat_format">Fat: %1$.2f g</string>
+    <string name="fiber_format">Fiber: %1$.2f g</string>
+
+
 
 
     <string-array name="dietary_options_array">
