@@ -3,12 +3,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 import retrofit2.Call;
@@ -27,6 +25,7 @@ public class MealInfo extends AppCompatActivity
         TextView typeTextView = findViewById(R.id.type);
         ImageView imageViewMeal = findViewById(R.id.image);
         Button returnButton = findViewById(R.id.toMenuButton);
+        TextView mealTitleTextView = findViewById(R.id.title);
 
         // Button to go back to the menu
         returnButton.setOnClickListener(v -> {
@@ -36,10 +35,11 @@ public class MealInfo extends AppCompatActivity
         });
 
         // Retrieve the passed recipe ID and image URL from the intent
-        getIntent().getStringExtra("MEAL_TITLE");
+        String mealTitle = getIntent().getStringExtra("MEAL_TITLE");
         int recipeId = getIntent().getIntExtra("MEAL_ID", -1);
         String imageUrl = getIntent().getStringExtra("IMAGE_URL");
         Picasso.get().load(imageUrl).into(imageViewMeal);
+        mealTitleTextView.setText(mealTitle);
 
         // Fetch the recipe details including ingredients and type
         fetchRecipeDetails(recipeId, ingredientsTextView, typeTextView);

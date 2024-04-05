@@ -60,6 +60,7 @@ public class ScanActivity extends AppCompatActivity
                     if (nutriments != null)
                     {
                         intent.putExtra("energy", nutriments.getEnergy());
+                        intent.putExtra("calories", nutriments.getCalories());
                         intent.putExtra("protein", nutriments.getProtein());
                         intent.putExtra("sugars", nutriments.getSugars());
                         intent.putExtra("fat", nutriments.getFat());

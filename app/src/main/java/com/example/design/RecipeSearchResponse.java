@@ -20,14 +20,23 @@ public class RecipeSearchResponse
 
         @SerializedName("image")
         String image;
+
+        @SerializedName("readyInMinutes")
+        int cookingTime;
+
+        @SerializedName("servings")
+        int servingSize;
+
     }
+
 
     public List<Recipe> getResults()
     {
         return results;
     }
 
-    public void setResults(List<Recipe> results) {
+    public void setResults(List<Recipe> results)
+    {
         this.results = results;
     }
 }

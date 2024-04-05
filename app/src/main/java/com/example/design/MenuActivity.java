@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -42,16 +43,13 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.Recip
         adapter = new MenuAdapter(recipeList, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-        adapter.setOnMealClickListener(new MenuAdapter.OnMealClickListener() {
-            @Override
-            public void onMealClick(RecipeSearchResponse.Recipe recipe) {
-                // Intent to start MealDetailActivity with recipe ID
-                Intent detailIntent = new Intent(MenuActivity.this, MealInfo.class);
-                detailIntent.putExtra("MEAL_ID", recipe.id); // Pass recipe ID
-                detailIntent.putExtra("MEAL_TITLE", recipe.title); // Pass title for display
-                detailIntent.putExtra("IMAGE_URL", recipe.image);
-                startActivity(detailIntent);
-            }
+        adapter.setOnMealClickListener(recipe -> {
+            // Intent to start MealDetailActivity with recipe ID
+            Intent detailIntent = new Intent(MenuActivity.this, MealInfo.class);
+            detailIntent.putExtra("MEAL_ID", recipe.id); // Pass recipe ID
+            detailIntent.putExtra("MEAL_TITLE", recipe.title); // Pass title for display
+            detailIntent.putExtra("IMAGE_URL", recipe.image);
+            startActivity(detailIntent);
         });
 
         Button scanButton = findViewById(R.id.scanButton);
@@ -80,16 +78,29 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.Recip
             }
         });
 
-        // listener for the Meal Plan button to navigate back to MainActivity
-        Button button = findViewById(R.id.mealPlanButton);
-        button.setOnClickListener(v -> MealPlan());
-        loadRecipes(); // A food query, left black to not search for a specific food.
+        Button Logout = findViewById(R.id.signOutButton);
+        Logout.setOnClickListener(v -> UserLogout());
+
+        Button mealPlanButton = findViewById(R.id.mealPlanButton);
+        mealPlanButton.setOnClickListener(v -> MealPlan());
+
+        loadRecipes();
+
     }
-    // Method to navigate back to MainActivity
+    public void UserLogout() {
+        Log.d("MenuActivity", "Logout button clicked");
+        Intent logInIntent = new Intent(MenuActivity.this, Login.class);
+        startActivity(logInIntent);
+        finish(); // Ensure MenuActivity is not on the back stack
+    }
+
+
     public void MealPlan() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
+
 
     @Override
     public void onRecipeSelected(String recipeName, String mealTime) {
@@ -97,6 +108,7 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.Recip
         returnIntent.putExtra("RECIPE_NAME", recipeName);
         returnIntent.putExtra("MEAL_TIME", mealTime);
         setResult(Activity.RESULT_OK, returnIntent);
+        finish();
     }
 
 

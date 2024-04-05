@@ -33,14 +33,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Serving Size"/>
+            android:text="@string/serving_size"/>
 
         <TextView
             android:id="@+id/servingTimeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Cooking Time"/>
+            android:text="@string/cooking_time"/>
 
 
 

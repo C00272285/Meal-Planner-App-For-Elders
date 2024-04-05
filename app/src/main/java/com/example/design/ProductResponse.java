@@ -33,7 +33,7 @@ public class ProductResponse
 
     public static class Nutriments
     {
-        public double energy, protein, sugars, fat, fiber;
+        public double energy, protein, sugars, fat, fiber, calories;
         public double getEnergy()
         {
             return energy;
@@ -75,6 +75,14 @@ public class ProductResponse
 
         public void setFiber(double fiber) {
             this.fiber = fiber;
+        }
+
+        public double getCalories() {
+            return calories;
+        }
+
+        public void setCalories(double calories) {
+            this.calories = calories;
         }
     }
 }

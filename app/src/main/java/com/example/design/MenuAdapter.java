@@ -1,4 +1,5 @@
 package com.example.design;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -29,19 +30,27 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.menu_item, parent, false);
         return new ViewHolder(view); // Pass the listener within onBindViewHolder instead
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position)
+    {
         RecipeSearchResponse.Recipe recipe = recipeList.get(position);
         holder.textViewTitle.setText(recipe.title);
         Picasso.get().load(recipe.image).into(holder.imageViewItem);
+        holder.cookingTimeText.setText(String.format("Cooking time: %d min", recipe.cookingTime));
+        holder.servingSizeText.setText(String.format("Serves: %d", recipe.servingSize));
 
-        holder.itemView.setOnClickListener(v -> {
-            if (onMealClickListener != null) {
+
+        holder.itemView.setOnClickListener(v ->
+        {
+            if (onMealClickListener != null)
+            {
                 onMealClickListener.onMealClick(recipeList.get(holder.getAdapterPosition()));
             }
         });
@@ -56,7 +65,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageViewItem;
-        TextView textViewTitle;
+        TextView textViewTitle, cookingTimeText, servingSizeText;
         Button btnAddToMain;
 
         public ViewHolder(View view) {
@@ -64,6 +73,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
             imageViewItem = view.findViewById(R.id.imageView_menu_item);
             textViewTitle = view.findViewById(R.id.textView_menu_title);
             btnAddToMain = view.findViewById(R.id.btnAddToMain);
+            cookingTimeText = view.findViewById(R.id.servingTimeText);
+            servingSizeText = view.findViewById(R.id.servingSizeText);
         }
     }
 

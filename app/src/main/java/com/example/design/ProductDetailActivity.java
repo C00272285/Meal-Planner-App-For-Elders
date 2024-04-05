@@ -20,12 +20,14 @@ public class ProductDetailActivity extends AppCompatActivity {
         TextView sugarsTextView = findViewById(R.id.sugars_text_view);
         TextView fatTextView = findViewById(R.id.fat_text_view);
         TextView fiberTextView = findViewById(R.id.fiber_text_view);
+        TextView caloriesTextView = findViewById(R.id.calories_text_view);
 
         //  Get the Scanned items details that are passed from ScanActivity class
         Intent intent = getIntent();
         String productName = intent.getStringExtra("productName");
         String brand = intent.getStringExtra("brand");
         double energy = intent.getDoubleExtra("energy", 0);
+        double calories = intent.getDoubleExtra("calories", 0);
         double protein = intent.getDoubleExtra("protein", 0);
         double sugars = intent.getDoubleExtra("sugars", 0);
         double fat = intent.getDoubleExtra("fat", 0);
@@ -35,6 +37,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         productNameTextView.setText(productName);
         brandTextView.setText(brand);
         energyTextView.setText(getString(R.string.energy_format, energy));
+        caloriesTextView.setText(getString(R.string.calories_format, calories));
         proteinTextView.setText(getString(R.string.protein_format, protein));
         sugarsTextView.setText(getString(R.string.sugars_format, sugars));
         fatTextView.setText(getString(R.string.fat_format, fat));
