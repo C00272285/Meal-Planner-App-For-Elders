@@ -58,8 +58,8 @@
     <string name="sugars_format">Sugars: %1$.2f g</string>
     <string name="fat_format">Fat: %1$.2f g</string>
     <string name="fiber_format">Fiber: %1$.2f g</string>
-    <string name="cooking_time">Cooking Time</string>
-    <string name="serving_size">Serving Size</string>
+    <string name="cooking_time">Cooking Time: %1$d min</string>
+    <string name="serving_size">Serving Size: %1$d</string>
     <string name="calories_format">Calories: %1$.2f kcal</string>
 
 

@@ -1,68 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <!-- Sign Out Button at the top left -->
-
-    <!-- Meal Plan Button at the bottom center -->
-    <Button
-        android:id="@+id/signOutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="16dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="@string/sign_out" />
-
-    <Button
-        android:id="@+id/mealPlanButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/mealPlan"
-        android:layout_marginBottom="16dp"/>
-    <Button
-        android:id="@+id/scanButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/scan"
-        android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@id/mealPlanButton"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"/>
-
-
-
-    <!-- Divider -->
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        android:layout_above="@id/mealPlanButton"
-        android:layout_marginBottom="48dp"/>
-
-    <!-- Spinner below the divider -->
-    <Spinner
-        android:id="@+id/spinner_dietary"
+    <!-- Container for the spinner and search bar -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/divider"
-        android:layout_marginBottom="8dp"/>
+        android:orientation="vertical"
+        android:padding="8dp">
 
-    <!-- RecyclerView fills the remaining space -->
+        <EditText
+            android:id="@+id/editText_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/search_here"
+            android:layout_marginTop="8dp"
+            android:inputType="text"
+            android:autofillHints="" />
+
+        <Spinner
+            android:id="@+id/spinner_dietary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@+id/signOutButton"
-        android:layout_above="@id/spinner_dietary"
+        android:layout_weight="1"
         android:padding="8dp"/>
 
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <Button
+            android:id="@+id/signOutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:text="@string/sign_out"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/mealPlanButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/mealPlan"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/scanButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="@string/scan"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            tools:ignore="RelativeOverlap" />
+    </RelativeLayout>
+</LinearLayout>

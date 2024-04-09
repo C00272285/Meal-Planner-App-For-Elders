@@ -1,34 +1,32 @@
 package com.example.design;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MenuActivity extends AppCompatActivity implements MenuAdapter.RecipeListener
+public class MenuActivity extends AppCompatActivity implements MenuAdapter.OnMealClickListener
 {
-    // creating an adapter to manage the lists of Meals
     private MenuAdapter adapter;
-    // creating a list to hold the fetched Meals from the API
-    private List<RecipeSearchResponse.Recipe> recipeList;
+    private final ArrayList<RecipeSearchResponse.Recipe> recipeList = new ArrayList<>();
+    private Spinner intoleranceSpinner;
+    private EditText searchEditText;
+    private Button scanButton, logoutButton, mealPlanButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -36,119 +34,119 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.Recip
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_item_main);
 
-        // variables to use for connecting to the XML file
-        // setting up RecyclerView to display the list of Meals
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        recipeList = new ArrayList<>();
-        adapter = new MenuAdapter(recipeList, this);
+        intoleranceSpinner = findViewById(R.id.spinner_dietary);
+        searchEditText = findViewById(R.id.editText_search);
+        scanButton = findViewById(R.id.scanButton);
+        logoutButton = findViewById(R.id.signOutButton);
+        mealPlanButton = findViewById(R.id.mealPlanButton);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new MenuAdapter(this, recipeList, this); // Passing 'this' as the OnMealClickListener
         recyclerView.setAdapter(adapter);
-        adapter.setOnMealClickListener(recipe -> {
-            // Intent to start MealDetailActivity with recipe ID
-            Intent detailIntent = new Intent(MenuActivity.this, MealInfo.class);
-            detailIntent.putExtra("MEAL_ID", recipe.id); // Pass recipe ID
-            detailIntent.putExtra("MEAL_TITLE", recipe.title); // Pass title for display
-            detailIntent.putExtra("IMAGE_URL", recipe.image);
-            startActivity(detailIntent);
-        });
 
-        Button scanButton = findViewById(R.id.scanButton);
-        scanButton.setOnClickListener(v -> {
-            Intent scanIntent = new Intent(MenuActivity.this, ScanActivity.class);
-            startActivity(scanIntent);
-        });
+        setupSpinner();
+        setupSearchEditText();
+        setupButtons();
+        loadRecipes("");
+    }
 
-        // Setting up the Spinner for selecting intolerances
-        Spinner intoleranceSpinner = findViewById(R.id.spinner_dietary);
+    private void setupSpinner()
+    {
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.dietary_options_array, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         intoleranceSpinner.setAdapter(spinnerAdapter);
-
-        // listener for spinner item selection to load Meals based on selected intolerance
-        intoleranceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        intoleranceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
             @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                String selectedIntolerance = parentView.getItemAtPosition(position).toString();
-                loadRecipesBasedOnIntolerance(selectedIntolerance);
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id)
+            {
+                filterRecipes();
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
+            public void onNothingSelected(AdapterView<?> parentView) {}
+        });
+    }
+
+    private void setupSearchEditText()
+    {
+        searchEditText.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+                filterRecipes();
             }
         });
-
-        Button Logout = findViewById(R.id.signOutButton);
-        Logout.setOnClickListener(v -> UserLogout());
-
-        Button mealPlanButton = findViewById(R.id.mealPlanButton);
-        mealPlanButton.setOnClickListener(v -> MealPlan());
-
-        loadRecipes();
-
-    }
-    public void UserLogout() {
-        Log.d("MenuActivity", "Logout button clicked");
-        Intent logInIntent = new Intent(MenuActivity.this, Login.class);
-        startActivity(logInIntent);
-        finish(); // Ensure MenuActivity is not on the back stack
     }
 
-
-    public void MealPlan() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-
-
-
-    @Override
-    public void onRecipeSelected(String recipeName, String mealTime) {
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra("RECIPE_NAME", recipeName);
-        returnIntent.putExtra("MEAL_TIME", mealTime);
-        setResult(Activity.RESULT_OK, returnIntent);
-        finish();
-    }
-
-
-    private void loadRecipes()
+    private void setupButtons()
     {
-        RequestManager.getInstance().searchRecipesByIntolerance("", "", "", new Callback<RecipeSearchResponse>() //will get the meals based off of the users intolerances.
+        scanButton.setOnClickListener(v -> {
+            Intent ScanIntent = new Intent(MenuActivity.this, ScanActivity.class); // Brings you to the Scan Activity class
+            startActivity(ScanIntent);
+            finish();
+        });
+
+        logoutButton.setOnClickListener(v -> {
+            Intent logInIntent = new Intent(MenuActivity.this, Login.class); // Brings you to the Login Class
+            startActivity(logInIntent);
+            finish();
+        });
+
+        mealPlanButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MenuActivity.this, MainActivity.class); // Brings you to the Main Activity class (Meal Plan Class)
+            startActivity(intent);
+        });
+    }
+
+    private void filterRecipes()
+    {
+        String query = searchEditText.getText().toString().trim();
+        loadRecipes(query);
+    }
+
+    private void loadRecipes(String query)
+    {
+        RequestManager.getInstance().searchRecipesByIntolerance(query, "", "", new Callback<RecipeSearchResponse>()
         {
             @SuppressLint("NotifyDataSetChanged")
             @Override
-            public void onResponse(@NonNull Call<RecipeSearchResponse> call, @NonNull Response<RecipeSearchResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
+            public void onResponse(@NonNull Call<RecipeSearchResponse> call, @NonNull Response<RecipeSearchResponse> response)
+            {
+                if (response.isSuccessful() && response.body() != null)
+                {
                     recipeList.clear();
                     recipeList.addAll(response.body().getResults());
                     adapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(MenuActivity.this, "Error fetching recipes!", Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onFailure(@NonNull Call<RecipeSearchResponse> call, @NonNull Throwable t)
             {
-                Toast.makeText(MenuActivity.this, "There was an error!" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MenuActivity.this, "There was an error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
-    // method to load recipes based on the selected intolerance
 
-    private void loadRecipesBasedOnIntolerance(String selectedIntolerance) {
-        RequestManager.getInstance().searchRecipesByIntolerance("", "", selectedIntolerance, new Callback<RecipeSearchResponse>() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onResponse(@NonNull Call<RecipeSearchResponse> call, @NonNull Response<RecipeSearchResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    recipeList.clear();
-                    recipeList.addAll(response.body().getResults());
-                    adapter.notifyDataSetChanged(); // refresh the adapter with new data
-                }
-            }
-            @Override
-            public void onFailure(@NonNull Call<RecipeSearchResponse> call, @NonNull Throwable t) {
-                Toast.makeText(MenuActivity.this, "Error fetching recipes: " + t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+    @Override
+    public void onMealClick(RecipeSearchResponse.Recipe recipe)
+    {
+        Intent detailIntent = new Intent(MenuActivity.this, MealInfo.class);
+        detailIntent.putExtra("MEAL_ID", recipe.id);
+        detailIntent.putExtra("MEAL_TITLE", recipe.title);
+        detailIntent.putExtra("IMAGE_URL", recipe.image);
+        startActivity(detailIntent);
     }
 }

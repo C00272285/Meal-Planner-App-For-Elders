@@ -50,4 +50,8 @@ public interface SpoonacularApiService {
             @Query("apiKey") String apiKey);
 
 
+
+
+
+
 }
