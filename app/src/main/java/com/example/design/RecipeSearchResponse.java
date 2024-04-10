@@ -22,10 +22,10 @@ public class RecipeSearchResponse
         String image;
 
         @SerializedName("readyInMinutes")
-        int cookingTime;
+        int readyInMinutes;
 
         @SerializedName("servings")
-        int servingSize;
+        int servings;
 
     }
 

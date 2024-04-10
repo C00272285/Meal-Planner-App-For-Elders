@@ -1,4 +1,5 @@
 package com.example.design;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,12 +34,19 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
         View view = LayoutInflater.from(context).inflate(R.layout.menu_item, parent, false);
         return new ViewHolder(view);
     }
+    @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position)
-    {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         RecipeSearchResponse.Recipe recipe = recipeList.get(position);
         holder.textViewTitle.setText(recipe.title);
         Picasso.get().load(recipe.image).into(holder.imageViewItem);
+        // if there is no cookingTime or ServingSize information available then display "not available"
+        String readyInMinutesText = recipe.readyInMinutes > 0 ? recipe.readyInMinutes + " min" : "Not available";
+        String servingsText = recipe.servings > 0 ? String.valueOf(recipe.servings) : "Not available";
+
+        holder.CookingTime.setText("Cooking Time: " + readyInMinutesText);
+        holder.ServingSize.setText("Servings: " + servingsText);
+
 
         holder.itemView.setOnClickListener(v -> {
             if (onMealClickListener != null)
@@ -56,12 +64,16 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
     {
         ImageView imageViewItem;
         TextView textViewTitle;
+        TextView CookingTime;
+        TextView ServingSize;
 
         public ViewHolder(View view)
         {
             super(view);
             imageViewItem = view.findViewById(R.id.imageView_menu_item);
             textViewTitle = view.findViewById(R.id.textView_menu_title);
+            CookingTime = view.findViewById(R.id.servingTimeText);
+            ServingSize = view.findViewById(R.id.servingSizeText);
         }
     }
 }
