@@ -80,7 +80,7 @@ public class Register extends AppCompatActivity {
                 ProgressBar.setVisibility(View.INVISIBLE);
                 return;
             }
-            registerUser(email, password, gender, weight, height, age, intolerance);
+            registerUser(email, password, intolerance, weight, height, age, gender);
         });
     }
 
@@ -128,11 +128,12 @@ public class Register extends AppCompatActivity {
                     DatabaseReference userRefWithEmail = FirebaseDatabase.getInstance("https://mealplanner-a23cb-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Users").child(encodedEmail);
                     HashMap<String, Object> userData = new HashMap<>();
                     userData.put("Email", email); // Storing the email
-                    userData.put("Intolerance", intolerance); // Storing intolerance preference
-                    userData.put("Height", height); // Storing Users Height
-                    userData.put("Weight", weight); // Storing Users Weight
+                    userData.put("Password", password); // Storing intolerance preference
+                    userData.put("Weight", weight); // Storing Users Height
+                    userData.put("Height", height); // Storing Users Weight
                     userData.put("Age", age); // Storing Users Age
                     userData.put("Gender", gender); // Storing Users Gender
+                    userData.put("Intolerance", intolerance); // Storing Users Intolerance
 
 
 
