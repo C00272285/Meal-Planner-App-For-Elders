@@ -1,5 +1,7 @@
 package com.example.design;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -19,7 +21,6 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 public class MenuActivity extends AppCompatActivity implements MenuAdapter.OnMealClickListener
 {
     private MenuAdapter adapter;
@@ -27,6 +28,7 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.OnMea
     private Spinner intoleranceSpinner;
     private EditText searchEditText;
     private Button scanButton, logoutButton, mealPlanButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -42,7 +44,7 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.OnMea
         mealPlanButton = findViewById(R.id.mealPlanButton);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new MenuAdapter(this, recipeList, this); // Passing 'this' as the OnMealClickListener
+        adapter = new MenuAdapter(this, recipeList, this);
         recyclerView.setAdapter(adapter);
 
         setupSpinner();
@@ -128,7 +130,6 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.OnMea
                     Toast.makeText(MenuActivity.this, "Error fetching recipes!", Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onFailure(@NonNull Call<RecipeSearchResponse> call, @NonNull Throwable t)
             {
@@ -145,5 +146,23 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.OnMea
         detailIntent.putExtra("MEAL_TITLE", recipe.title);
         detailIntent.putExtra("IMAGE_URL", recipe.image);
         startActivity(detailIntent);
+    }
+
+    public void showMealTimeDialog(RecipeSearchResponse.Recipe recipe)
+    {
+        final String[] mealTimes = {"Breakfast", "Lunch", "Dinner"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Choose Meal Time")
+                .setItems(mealTimes, (dialog, which) -> {
+                    String mealTime = mealTimes[which];
+
+                    Intent data = new Intent();
+                    data.putExtra("RECIPE_NAME", recipe.title);
+                    data.putExtra("MEAL_TIME", mealTime);
+                    setResult(Activity.RESULT_OK, data);
+                    finish();
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

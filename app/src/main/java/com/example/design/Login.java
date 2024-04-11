@@ -42,6 +42,7 @@ public class Login extends AppCompatActivity
         } else {
             // User is already logged in, redirect to MenuActivity.
             Intent intent = new Intent(Login.this, MenuActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);   //   Should fix the problem of the app closing when selecting "ADD" when you first launch the app.
             startActivity(intent);
             finish(); // Close the login activity
         }

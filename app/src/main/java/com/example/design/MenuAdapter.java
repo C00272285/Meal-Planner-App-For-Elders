@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -27,13 +28,14 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
         this.recipeList = recipeList;
         this.onMealClickListener = onMealClickListener;
     }
+
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-    {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.menu_item, parent, false);
         return new ViewHolder(view);
     }
+
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
@@ -49,31 +51,46 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
 
 
         holder.itemView.setOnClickListener(v -> {
-            if (onMealClickListener != null)
-            {
+            if (onMealClickListener != null) {
                 onMealClickListener.onMealClick(recipe);
             }
         });
     }
+
     @Override
     public int getItemCount()
     {
         return recipeList.size();
     }
-    public static class ViewHolder extends RecyclerView.ViewHolder
+
+    public class ViewHolder extends RecyclerView.ViewHolder
     {
         ImageView imageViewItem;
         TextView textViewTitle;
         TextView CookingTime;
         TextView ServingSize;
+        Button btnAddToMain;
 
-        public ViewHolder(View view)
-        {
+        public ViewHolder(View view) {
             super(view);
             imageViewItem = view.findViewById(R.id.imageView_menu_item);
             textViewTitle = view.findViewById(R.id.textView_menu_title);
             CookingTime = view.findViewById(R.id.servingTimeText);
             ServingSize = view.findViewById(R.id.servingSizeText);
+            btnAddToMain = view.findViewById(R.id.btnAddToMain);
+
+            btnAddToMain.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION)
+                {
+                    RecipeSearchResponse.Recipe recipe = recipeList.get(position);
+                    if (context instanceof MenuActivity)
+                    {
+                        ((MenuActivity) context).showMealTimeDialog(recipe);
+                    }
+                }
+            });
         }
     }
+
 }

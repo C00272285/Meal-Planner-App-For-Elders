@@ -51,6 +51,7 @@ public class Register extends AppCompatActivity {
         {
             // Intent to navigate from Register to Login activity
             Intent intent = new Intent(Register.this, Login.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // This clears the stack, this should solve the issues of the app closing when using the "ADD" button.
             startActivity(intent);
             finish();
         });
