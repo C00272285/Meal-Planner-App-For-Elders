@@ -46,6 +46,21 @@ public class Register extends AppCompatActivity {
         ProgressBar = findViewById(R.id.progressBar);
         TextView loginNow = findViewById(R.id.loginNow);
 
+        //  This checks to see if the user has registered which will automatically bring them to the Meal Planner Screen.
+        if (mAuth.getCurrentUser() != null)
+        {
+            startActivity(new Intent(Register.this, MainActivity.class));
+            finish();
+            return;
+        }
+        Spinner activityLevelSpinner = findViewById(R.id.activitySpinner);
+        ArrayAdapter<CharSequence> activityAdapter = ArrayAdapter.createFromResource(this,
+                R.array.activity_levels, android.R.layout.simple_spinner_item);
+        activityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        activityLevelSpinner.setAdapter(activityAdapter);
+
+
+
         // Setting click listener to navigate to the Login activity
         loginNow.setOnClickListener(v ->
         {
@@ -76,12 +91,13 @@ public class Register extends AppCompatActivity {
             String height = Height.getText().toString().trim();
             String age = Age.getText().toString().trim();
             String gender = GenderSpinner.getSelectedItem().toString();
+            String activityLevel = activityLevelSpinner.getSelectedItem().toString();
 
             if (!validateForm(email, password, weight, height, age)) {
                 ProgressBar.setVisibility(View.INVISIBLE);
                 return;
             }
-            registerUser(email, password, intolerance, weight, height, age, gender);
+            registerUser(email, password, intolerance, weight, height, age, gender, activityLevel);
         });
     }
 
@@ -117,7 +133,7 @@ public class Register extends AppCompatActivity {
         }
     }
 
-    private void registerUser(String email, String password, String intolerance, String weight, String height, String age, String gender)
+    private void registerUser(String email, String password, String intolerance, String weight, String height, String age, String gender, String activityLevel)
     {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task ->
         {
@@ -135,6 +151,7 @@ public class Register extends AppCompatActivity {
                     userData.put("Age", age); // Storing Users Age
                     userData.put("Gender", gender); // Storing Users Gender
                     userData.put("Intolerance", intolerance); // Storing Users Intolerance
+                    userData.put("ActivityLevel", activityLevel); // Storing Users Activity
 
 
 

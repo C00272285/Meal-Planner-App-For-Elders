@@ -40,18 +40,6 @@ public class RequestManager {
         return instance;
     }
 
-    public void getIngredientInformation(int ingredientId, int amount, String unit, Callback<SpoonacularIngredient> callback)
-    {
-        Call<SpoonacularIngredient> call = apiService.getIngredientInformation(ingredientId, amount, unit, API_KEY);
-        call.enqueue(callback);
-    }
-
-    public void searchRecipes(String query, String diet, String excludeIngredients, String intolerances, Callback<RecipeSearchResponse> callback)
-    {
-        Call<RecipeSearchResponse> call = apiService.searchRecipes(query, diet, excludeIngredients, intolerances, API_KEY);
-        call.enqueue(callback);
-    }
-
     public void searchRecipesByIntolerance(String query, String excludeIngredients, String intolerances, Callback<RecipeSearchResponse> callback)
     {
         Call<RecipeSearchResponse> call = apiService.searchRecipesByIntolerance(query, excludeIngredients, intolerances, API_KEY);
@@ -69,5 +57,9 @@ public class RequestManager {
         call.enqueue(callback);
     }
 
+    public void searchRecipes(String query, String cuisine, String intolerances, Callback<RecipeSearchResponse> callback) {
+        Call<RecipeSearchResponse> call = apiService.searchRecipes(query, cuisine, "", intolerances, API_KEY);
+        call.enqueue(callback);
+    }
 
 }

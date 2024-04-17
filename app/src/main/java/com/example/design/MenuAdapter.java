@@ -79,6 +79,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
             ServingSize = view.findViewById(R.id.servingSizeText);
             btnAddToMain = view.findViewById(R.id.btnAddToMain);
 
+
             btnAddToMain.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION)

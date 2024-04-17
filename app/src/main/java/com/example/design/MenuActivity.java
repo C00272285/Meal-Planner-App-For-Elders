@@ -3,6 +3,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -17,7 +18,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.Objects;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,6 +40,7 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.OnMea
     private Spinner intoleranceSpinner;
     private EditText searchEditText;
     private Button scanButton, logoutButton, mealPlanButton;
+    private String selectedMealTime;
 
 
     @Override
@@ -42,6 +55,10 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.OnMea
         scanButton = findViewById(R.id.scanButton);
         logoutButton = findViewById(R.id.signOutButton);
         mealPlanButton = findViewById(R.id.mealPlanButton);
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        assert currentUser != null;
+        fetchUserIntolerance();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new MenuAdapter(this, recipeList, this);
@@ -71,6 +88,46 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.OnMea
             public void onNothingSelected(AdapterView<?> parentView) {}
         });
     }
+
+    private void fetchUserIntolerance() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users")
+                    .child(Objects.requireNonNull(currentUser.getEmail()).replace(".", ","));
+
+            userRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String intolerance = dataSnapshot.child("Intolerance").getValue(String.class);
+                    filterRecipesBasedOnIntolerance(intolerance);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(MenuActivity.this, "Failed to load intolerance.",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private void filterRecipesBasedOnIntolerance(String intolerance) {
+        String query = searchEditText.getText().toString().trim();
+        RequestManager.getInstance().searchRecipesByIntolerance(query, "", intolerance, new Callback<RecipeSearchResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<RecipeSearchResponse> call, @NonNull Response<RecipeSearchResponse> response) {
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<RecipeSearchResponse> call, @NonNull Throwable t) {
+
+            }
+        });
+    }
+
+
 
     private void setupSearchEditText()
     {
@@ -139,8 +196,7 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.OnMea
     }
 
     @Override
-    public void onMealClick(RecipeSearchResponse.Recipe recipe)
-    {
+    public void onMealClick(RecipeSearchResponse.Recipe recipe) {
         Intent detailIntent = new Intent(MenuActivity.this, MealInfo.class);
         detailIntent.putExtra("MEAL_ID", recipe.id);
         detailIntent.putExtra("MEAL_TITLE", recipe.title);
@@ -148,21 +204,30 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.OnMea
         startActivity(detailIntent);
     }
 
-    public void showMealTimeDialog(RecipeSearchResponse.Recipe recipe)
-    {
+    private void saveMealSelection(RecipeSearchResponse.Recipe recipe, String mealTime) {
+        SharedPreferences prefs = getSharedPreferences("MealSelections", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(mealTime, recipe.title);
+        editor.apply();
+    }
+
+
+
+    public void showMealTimeDialog(RecipeSearchResponse.Recipe recipe) {
         final String[] mealTimes = {"Breakfast", "Lunch", "Dinner"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Choose Meal Time")
                 .setItems(mealTimes, (dialog, which) -> {
-                    String mealTime = mealTimes[which];
-
+                    selectedMealTime = mealTimes[which];
+                    saveMealSelection(recipe, selectedMealTime);
                     Intent data = new Intent();
                     data.putExtra("RECIPE_NAME", recipe.title);
-                    data.putExtra("MEAL_TIME", mealTime);
+                    data.putExtra("MEAL_TIME", selectedMealTime);
                     setResult(Activity.RESULT_OK, data);
                     finish();
                 });
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
 }

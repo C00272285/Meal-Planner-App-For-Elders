@@ -61,8 +61,34 @@
     <string name="cooking_time">Cooking Time: %1$d min</string>
     <string name="serving_size">Serving Size: %1$d</string>
     <string name="calories_format">Calories: %1$.2f kcal</string>
+    <string name="total_calories">Total Calories :</string>
+    <string name="calories_used">Calories Used :</string>
+    <string name="search">Search</string>
+    <string name="sushi">Sushi</string>
+    <string name="burgers">Burgers</string>
+    <string name="pizza">Pizza</string>
+    <string name="chinese">Chinese</string>
+    <string name="italian">Italian</string>
+    <string name="stew">Stew</string>
+    <string name="soup">Soup</string>
+    <string name="Italian">Italian</string>
+    <string name="Asian">Asian</string>
+    <string name="breakfast">breakfast</string>
+    <string name="lunch">Lunch\n</string>
+    <string name="dinner">Dinner\n</string>
+    <string name="desert">Desert</string>
+    <string name="Indian">Indian</string>
+    <string name="Chinese">Chinese</string>
+    <string name="Spanish">Spanish</string>
+    <string name="Mexican">Mexican</string>
 
-
+    <string-array name="activity_levels">
+        <item>Sedentary</item>
+        <item>Lightly active</item>
+        <item>Moderately active</item>
+        <item>Very active</item>
+        <item>Super active</item>
+    </string-array>
 
     <string-array name="dietary_options_array">
         <item>Dairy</item>

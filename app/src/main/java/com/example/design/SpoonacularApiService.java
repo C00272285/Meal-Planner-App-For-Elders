@@ -49,6 +49,14 @@ public interface SpoonacularApiService {
             @Query("includeNutrition") boolean includeNutrition,
             @Query("apiKey") String apiKey);
 
+    @GET("recipes/complexSearch")
+    Call<RecipeSearchResponse> searchRecipes(
+            @Query("query") String query,
+            @Query("cuisine") String cuisine,
+            @Query("intolerances") String intolerances,
+            @Query("apiKey") String apiKey
+    );
+
 
 
 
