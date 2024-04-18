@@ -18,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,10 +25,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.Objects;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -153,7 +150,15 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.OnMea
         });
 
         logoutButton.setOnClickListener(v -> {
+            //  Prevents different users from getting other users logged meals popping up in there meal plan
+            SharedPreferences prefs = getSharedPreferences("MealSelections", MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.clear();
+            editor.apply();
+
+            FirebaseAuth.getInstance().signOut();   //  Logs the current user out allowing them to go to the login screen
             Intent logInIntent = new Intent(MenuActivity.this, Login.class); // Brings you to the Login Class
+            logInIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(logInIntent);
             finish();
         });
@@ -196,7 +201,8 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.OnMea
     }
 
     @Override
-    public void onMealClick(RecipeSearchResponse.Recipe recipe) {
+    public void onMealClick(RecipeSearchResponse.Recipe recipe)
+    {
         Intent detailIntent = new Intent(MenuActivity.this, MealInfo.class);
         detailIntent.putExtra("MEAL_ID", recipe.id);
         detailIntent.putExtra("MEAL_TITLE", recipe.title);
@@ -204,16 +210,25 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.OnMea
         startActivity(detailIntent);
     }
 
-    private void saveMealSelection(RecipeSearchResponse.Recipe recipe, String mealTime) {
+    private void saveMealSelection(RecipeSearchResponse.Recipe recipe, String mealTime)
+    {
         SharedPreferences prefs = getSharedPreferences("MealSelections", MODE_PRIVATE);
+        String existingMeals = prefs.getString(mealTime, "");
+        if (!existingMeals.isEmpty()) {
+            existingMeals += "\n"; // Add a newline to separate meals
+        }
+        existingMeals += recipe.title; // Append the new meal
+
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(mealTime, recipe.title);
+        editor.putString(mealTime, existingMeals);
         editor.apply();
     }
 
 
 
-    public void showMealTimeDialog(RecipeSearchResponse.Recipe recipe) {
+
+    public void showMealTimeDialog(RecipeSearchResponse.Recipe recipe)
+    {
         final String[] mealTimes = {"Breakfast", "Lunch", "Dinner"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Choose Meal Time")

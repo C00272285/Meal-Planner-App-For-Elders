@@ -6,46 +6,75 @@
     tools:context=".MainActivity">
 
 
-    <ImageView
-        android:id="@+id/previousButton"
-        android:layout_width="42dp"
-        android:layout_height="34dp"
-        android:src="@drawable/ic_left_arrow_vector"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="ContentDescription" />
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/date"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/previousButton"
         app:layout_constraintEnd_toStartOf="@+id/nextButton"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintStart_toEndOf="@+id/previousButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.325" />
+
+    <ImageView
+        android:id="@+id/previousButton"
+        android:layout_width="42dp"
+        android:layout_height="34dp"
+        android:src="@drawable/ic_left_arrow_vector"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.322"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/nextButton"
         android:layout_width="42dp"
         android:layout_height="34dp"
+        android:layout_marginEnd="8dp"
         android:src="@drawable/ic_right_arrow_vector"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.322"
         tools:ignore="ContentDescription" />
 
+    <TextView
+        android:id="@+id/dinnerLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="116dp"
+        android:layout_marginEnd="264dp"
+        android:layout_marginBottom="1dp"
+        android:text="@string/Dinner"
+        app:layout_constraintBottom_toTopOf="@+id/dinner"
+        app:layout_constraintEnd_toStartOf="@+id/totalCaloriesDinner"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lunch"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dinnerLabel" />
 
     <EditText
         android:id="@+id/dinner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:autofillHints=""
+        android:gravity="top|start"
         android:hint="@string/Dinner"
-        android:inputType="text"
+        android:inputType="textMultiLine"
         android:padding="16dp"
         android:textColor="#E7CD38"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -53,129 +82,185 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.71" />
+        app:layout_constraintVertical_bias="0.796" />
 
     <EditText
         android:id="@+id/breakfast"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:autofillHints=""
+        android:gravity="top|start"
         android:hint="@string/Breakfast"
-        android:inputType="text"
+        android:inputType="textMultiLine"
+        android:minLines="1"
         android:padding="16dp"
         android:textColor="#E7CD38"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.473" />
+        app:layout_constraintVertical_bias="0.546" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/breakfastLabel" />
+
+    <TextView
+        android:id="@+id/breakfastLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="243dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/Breakfast"
+        app:layout_constraintBottom_toTopOf="@+id/breakfast"
+        app:layout_constraintEnd_toStartOf="@+id/totalCaloriesBreakfast"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lunch"
+        app:layout_constraintVertical_bias="0.609" />
+
+    <TextView
+        android:id="@+id/totalCaloriesBreakfast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="328dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="15dp"
+        android:text="@string/calories_0"
+        app:layout_constraintBottom_toTopOf="@+id/breakfast"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.816"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lunch"
+        app:layout_constraintVertical_bias="0.562" />
 
     <EditText
         android:id="@+id/lunch"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:autofillHints=""
+        android:gravity="top|start"
         android:hint="@string/Lunch"
-        android:inputType="text"
+        android:inputType="textMultiLine"
+        android:minLines="1"
         android:padding="16dp"
         android:textColor="#E7CD38"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/breakfast"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.206" />
+        app:layout_constraintVertical_bias="0.596" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lunchLabel" />
 
     <TextView
-        android:id="@+id/totalCaloriesBreakfast"
+        android:id="@+id/lunchLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/calories_0"
-        app:layout_constraintTop_toBottomOf="@+id/breakfast"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="266dp"
+        android:text="@string/Lunch"
+        app:layout_constraintBottom_toTopOf="@+id/lunch"
+        app:layout_constraintEnd_toStartOf="@+id/totalCaloriesLunch"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="16dp"/>
+        app:layout_constraintTop_toBottomOf="@+id/previousButton"
+        app:layout_constraintVertical_bias="0.932" />
+
 
     <TextView
         android:id="@+id/totalCaloriesLunch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/calories_0"
-        app:layout_constraintTop_toBottomOf="@+id/lunch"
+        app:layout_constraintBottom_toTopOf="@+id/lunch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.946"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="16dp"/>
+        app:layout_constraintTop_toBottomOf="@+id/nextButton"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/totalCaloriesDinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="328dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="15dp"
         android:text="@string/calories_0"
-        app:layout_constraintTop_toBottomOf="@+id/dinner"
+        app:layout_constraintBottom_toTopOf="@+id/dinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.816"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="16dp"/>
-
-
-
+        app:layout_constraintTop_toBottomOf="@+id/breakfast"
+        app:layout_constraintVertical_bias="0.714" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="153dp"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="39dp"
         android:layout_marginEnd="167dp"
-        android:layout_marginBottom="12dp"
         android:text="@string/insert"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dinner" />
-
 
     <Button
         android:id="@+id/Recipes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="38dp"
+        android:layout_marginEnd="54dp"
         android:text="@string/Recipes"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/dinner" />
 
     <Button
         android:id="@+id/viewHistoryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginTop="38dp"
         android:text="@string/view_history"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.943"
+        app:layout_constraintHorizontal_bias="0.975"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dinner"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/loggedInUserTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="152dp"
-        android:layout_marginTop="24dp"
-        android:text="User: "
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="HardcodedText" />
-
+        app:layout_constraintTop_toBottomOf="@+id/dinner" />
 
     <com.example.design.CalorieBarView
         android:id="@+id/calorieBarView"
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:layout_marginBottom="118dp"
+        android:layout_marginBottom="170dp"
         app:layout_constraintBottom_toTopOf="@+id/previousButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/totalCaloriesText"
         tools:ignore="MissingConstraints" />
@@ -184,22 +269,27 @@
         android:id="@+id/totalCaloriesText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="192dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="318dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/total_calories"
         app:layout_constraintBottom_toTopOf="@+id/calorieBarView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/caloriesUsedText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="139dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="220dp"
         android:text="@string/calories_used"
         app:layout_constraintBottom_toTopOf="@+id/calorieBarView"
+        app:layout_constraintEnd_toStartOf="@+id/totalCaloriesText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Recipes" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
