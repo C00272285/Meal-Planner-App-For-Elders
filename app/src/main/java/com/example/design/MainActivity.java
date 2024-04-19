@@ -132,11 +132,13 @@ public class MainActivity extends AppCompatActivity
 //        }
 //    }
 
-//    @SuppressLint("SetTextI18n")
+    //    @SuppressLint("SetTextI18n")
 //    private void updateCalorieDisplay(double totalCalories) {
 //        totalCaloriesText.setText("Total Calories: " + totalCalories);
 //        caloriesUsedText.setText("Calories Used: " + (double) 0);
 //    }
+    //nutrition
+
     private void clearMealEntries() {
         breakfastEditText.setText("");
         lunchEditText.setText("");
@@ -288,5 +290,3 @@ public class MainActivity extends AppCompatActivity
     }
 
 }
-
-

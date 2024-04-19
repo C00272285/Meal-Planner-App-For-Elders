@@ -1,8 +1,11 @@
 package com.example.design;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,7 +29,9 @@ public class MealInfo extends AppCompatActivity
         ImageView imageViewMeal = findViewById(R.id.image);
         Button returnButton = findViewById(R.id.toMenuButton);
         TextView mealTitleTextView = findViewById(R.id.title);
-
+        TextView nutritionTextView = findViewById(R.id.nutrition);
+        TextView servingsTextView = findViewById(R.id.servings);
+        TextView cookingTimeTextView = findViewById(R.id.cookingtime);
         // Button to go back to the menu
         returnButton.setOnClickListener(v -> {
             Intent intent = new Intent(MealInfo.this, MenuActivity.class);
@@ -41,30 +46,60 @@ public class MealInfo extends AppCompatActivity
         Picasso.get().load(imageUrl).into(imageViewMeal);
         mealTitleTextView.setText(mealTitle);
 
-        // Fetch the recipe details including ingredients and type
-        fetchRecipeDetails(recipeId, ingredientsTextView, typeTextView);
+        fetchRecipeDetails(recipeId, ingredientsTextView, typeTextView, nutritionTextView, servingsTextView, cookingTimeTextView);
 
         // Display the cooking instructions
         fetchCookingInstructions(recipeId, textViewInstructions);
     }
 
-    private void fetchRecipeDetails(int recipeId, TextView ingredientsTextView, TextView typeTextView)
+    private void fetchRecipeDetails(int recipeId, TextView ingredientsTextView, TextView typeTextView, TextView nutritionTextView, TextView servingsTextView, TextView cookingTimeTextView)
     {
-        RequestManager.getInstance().getRecipeDetails(recipeId, true, new Callback<RecipeDetailResponse>()
-        {
+        RequestManager.getInstance().getRecipeDetails(recipeId, true, new Callback<RecipeDetailResponse>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(@NonNull Call<RecipeDetailResponse> call, @NonNull Response<RecipeDetailResponse> response)
             {
-                //Log.d("MealInfo", "API Response: " + new Gson().toJson(response.body()));
                 if (response.isSuccessful() && response.body() != null)
                 {
                     RecipeDetailResponse recipeDetails = response.body();
 
-                    StringBuilder ingredientsBuilder = getStringBuilder(recipeDetails);
+                    if (recipeDetails.getServings() > 0) {
+                        servingsTextView.setText("Servings: " + recipeDetails.getServings());
+                    }
+                    else
+                    {
+                        servingsTextView.setText("Servings: Not available");
+                    }
 
+                    if (recipeDetails.getReadyInMinutes() > 0) {
+                        cookingTimeTextView.setText("Ready in: " + recipeDetails.getReadyInMinutes() + " minutes");
+                    }
+                    else
+                    {
+                        cookingTimeTextView.setText("Cooking time: Not available");
+                    }
+
+                    StringBuilder ingredientsBuilder = new StringBuilder("Ingredients:\n");
+                    if (recipeDetails.getIngredients() != null) {
+                        for (Ingredient ingredient : recipeDetails.getIngredients())
+                        {
+                            ingredientsBuilder.append("- ")
+                                    .append(ingredient.getName())
+                                    .append(": ")
+                                    .append(ingredient.getAmount())
+                                    .append(" ")
+                                    .append(ingredient.getUnit())
+                                    .append("\n");
+                        }
+                    }
+                    else
+                    {
+                        ingredientsBuilder.append("No ingredients available.\n");
+                    }
                     ingredientsTextView.setText(ingredientsBuilder.toString());
+
                     StringBuilder dishTypesBuilder = new StringBuilder("Meal Type:\n");
-                    if (recipeDetails.getDishTypes() != null) { // Null check for dishTypes
+                    if (recipeDetails.getDishTypes() != null) {
                         for (String dishType : recipeDetails.getDishTypes())
                         {
                             dishTypesBuilder.append("- ").append(dishType).append("\n");
@@ -74,8 +109,26 @@ public class MealInfo extends AppCompatActivity
                     {
                         dishTypesBuilder.append("No meal type available.\n");
                     }
-
                     typeTextView.setText(dishTypesBuilder.toString());
+
+                    StringBuilder nutritionBuilder = new StringBuilder("Nutrition Info per serving:\n");
+                    if (recipeDetails.getNutrition() != null && recipeDetails.getNutrition().nutrients != null)
+                    {
+                        for (RecipeDetailResponse.Nutrition.Nutrient nutrient : recipeDetails.getNutrition().nutrients)
+                        {
+                            nutritionBuilder.append(nutrient.title)
+                                    .append(": ")
+                                    .append(nutrient.amount)
+                                    .append(" ")
+                                    .append(nutrient.unit)
+                                    .append("\n");
+                        }
+                    }
+                    else
+                    {
+                        nutritionBuilder.append("No nutrition data available.\n");
+                    }
+                    nutritionTextView.setText(nutritionBuilder.toString());
                 }
                 else
                 {
@@ -84,36 +137,11 @@ public class MealInfo extends AppCompatActivity
             }
 
             @Override
-            public void onFailure(@NonNull Call<RecipeDetailResponse> call, @NonNull Throwable t)
-            {
+            public void onFailure(@NonNull Call<RecipeDetailResponse> call, @NonNull Throwable t) {
                 Toast.makeText(MealInfo.this, "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
-
-    @NonNull
-    private static StringBuilder getStringBuilder(RecipeDetailResponse recipeDetails) {
-        StringBuilder ingredientsBuilder = new StringBuilder("Ingredients:\n");
-        if (recipeDetails.getIngredients() != null) { // Null check for ingredients
-            for (Ingredient ingredient : recipeDetails.getIngredients())
-            {
-                ingredientsBuilder.append("- ")
-                        .append(ingredient.getName())
-                        .append(": ")
-                        .append(ingredient.getAmount())
-                        .append(" ")
-                        .append(ingredient.getUnit())
-                        .append("\n");
-            }
-
-        }
-        else
-        {
-            ingredientsBuilder.append("No ingredients available.\n");
-        }
-        return ingredientsBuilder;
-    }
-
 
 
 

@@ -56,10 +56,4 @@ public interface SpoonacularApiService {
             @Query("intolerances") String intolerances,
             @Query("apiKey") String apiKey
     );
-
-
-
-
-
-
 }

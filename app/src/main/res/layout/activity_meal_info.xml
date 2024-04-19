@@ -21,7 +21,8 @@
         <ImageView
             android:id="@+id/image"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/description"
@@ -36,6 +37,30 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:text="@string/cooking_instructions"/>
+
+        <TextView
+            android:id="@+id/cookingtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="@string/cookingtime"/>
+
+        <TextView
+            android:id="@+id/servings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Servings Size:"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/nutrition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Nutrition"
+            tools:ignore="HardcodedText" />
+
 
         <TextView
             android:id="@+id/ingredients"

@@ -81,6 +81,7 @@
     <string name="Chinese">Chinese</string>
     <string name="Spanish">Spanish</string>
     <string name="Mexican">Mexican</string>
+    <string name="cookingtime">CookingTime:</string>
 
     <string-array name="activity_levels">
         <item>Sedentary</item>
