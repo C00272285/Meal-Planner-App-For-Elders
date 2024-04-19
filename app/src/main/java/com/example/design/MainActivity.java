@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity
 //        totalCaloriesText.setText("Total Calories: " + totalCalories);
 //        caloriesUsedText.setText("Calories Used: " + (double) 0);
 //    }
-    //nutrition
+
 
     private void clearMealEntries() {
         breakfastEditText.setText("");
