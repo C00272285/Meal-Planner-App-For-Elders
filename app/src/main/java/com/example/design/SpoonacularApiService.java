@@ -1,9 +1,9 @@
 package com.example.design;
-
 import java.util.List;
-
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -56,4 +56,31 @@ public interface SpoonacularApiService {
             @Query("intolerances") String intolerances,
             @Query("apiKey") String apiKey
     );
+
+    @POST("mealplanner/{username}/shopping-list/items")
+    Call<Void> addToShoppingList(
+            @Path("username") String username,
+            @Query("hash") String hash,
+            @Body ShoppingListItem item);
+
+    @GET("recipes/{id}/information")
+    Call<ShoppingListRecipeDetail> getRecipeDetailsForShoppingList(
+            @Path("id") int recipeId,
+            @Query("includeNutrition") boolean includeNutrition,
+            @Query("apiKey") String apiKey);
+
+    @GET("recipes/complexSearch")
+    Call<CustomRecipeSearchResponse> searchRecipesCustom(
+            @Query("query") String query,
+            @Query("cuisine") String cuisine,
+            @Query("excludeIngredients") String excludeIngredients,
+            @Query("intolerances") String intolerances,
+            @Query("apiKey") String apiKey);
+
+
+    @GET("recipes/{id}/priceBreakdownWidget.json")
+    Call<PriceBreakdownResponse> getPriceBreakdown(
+            @Path("id") int recipeId,
+            @Query("apiKey") String apiKey);
+
 }

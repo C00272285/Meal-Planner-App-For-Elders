@@ -16,7 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 import java.util.Objects;
-
+import java.util.UUID;
 public class Register extends AppCompatActivity {
 
     private EditText EmailAddress, Password, Height, Weight, Age;
@@ -101,6 +101,10 @@ public class Register extends AppCompatActivity {
         });
     }
 
+    private String generateUniqueHash() {
+        return UUID.randomUUID().toString();
+    }
+
     private boolean validateForm(String email, String password, String weight, String age, String height)
     {
         if (email.isEmpty())
@@ -140,7 +144,7 @@ public class Register extends AppCompatActivity {
             if (task.isSuccessful()) {
                 FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null) {
-                    // Encode the email address
+                    String userHash = generateUniqueHash();
                     String encodedEmail = email.replace(".", ",");
                     DatabaseReference userRefWithEmail = FirebaseDatabase.getInstance("https://mealplanner-a23cb-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Users").child(encodedEmail);
                     HashMap<String, Object> userData = new HashMap<>();
@@ -152,9 +156,7 @@ public class Register extends AppCompatActivity {
                     userData.put("Gender", gender); // Storing Users Gender
                     userData.put("Intolerance", intolerance); // Storing Users Intolerance
                     userData.put("ActivityLevel", activityLevel); // Storing Users Activity
-
-
-
+                    userData.put("UserHash", userHash);  // Storing the unique hash
                     userRefWithEmail.setValue(userData).addOnCompleteListener(task1 ->
                     {
                         if (task1.isSuccessful())

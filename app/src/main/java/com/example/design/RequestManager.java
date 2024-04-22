@@ -62,4 +62,26 @@ public class RequestManager {
         call.enqueue(callback);
     }
 
+    public void addToShoppingList(String username, String hash, ShoppingListItem item, Callback<Void> callback) {
+        Call<Void> call = apiService.addToShoppingList(username, hash, item);
+        call.enqueue(callback);
+    }
+
+    public void searchRecipesByNameCustom(String query, Callback<CustomRecipeSearchResponse> callback) {
+        Call<CustomRecipeSearchResponse> call = apiService.searchRecipesCustom(query, "", "", "", API_KEY);
+        call.enqueue(callback);
+    }
+
+    public void getRecipeDetailsForShoppingList(int recipeId, boolean includeNutrition, Callback<ShoppingListRecipeDetail> callback) {
+        Call<ShoppingListRecipeDetail> call = apiService.getRecipeDetailsForShoppingList(recipeId, includeNutrition, API_KEY);
+        call.enqueue(callback);
+    }
+
+    public void getPriceBreakdown(int recipeId, Callback<PriceBreakdownResponse> callback) {
+        Call<PriceBreakdownResponse> call = apiService.getPriceBreakdown(recipeId, API_KEY);
+        call.enqueue(callback);
+    }
+
+
+
 }

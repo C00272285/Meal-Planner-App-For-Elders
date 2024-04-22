@@ -82,6 +82,10 @@
     <string name="Spanish">Spanish</string>
     <string name="Mexican">Mexican</string>
     <string name="cookingtime">CookingTime:</string>
+    <string name="ShoppingList">ShoppingList</string>
+    <string name="clear_meals">Clear Meals</string>
+    <string name="add_to_shopping_list">Add to Shopping List</string>
+    <string name="refresh">Refresh</string>
 
     <string-array name="activity_levels">
         <item>Sedentary</item>

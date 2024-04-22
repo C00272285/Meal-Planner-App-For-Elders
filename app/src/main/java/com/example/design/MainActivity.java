@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity
         //calorieBarView = findViewById(R.id.calorieBarView);
         Button insertButton = findViewById(R.id.button);
         Button recipesButton = findViewById(R.id.Recipes);
+        Button shoppingButton = findViewById(R.id.shoppinglist);
+
 
 
 
@@ -81,6 +83,10 @@ public class MainActivity extends AppCompatActivity
         insertButton.setOnClickListener(v -> saveMealPlanToDatabase());
         recipesButton.setOnClickListener(v -> openRecipesView());
 
+        shoppingButton.setOnClickListener(v -> {
+            Intent historyIntent = new Intent(MainActivity.this, ShoppingListActivity.class);
+            startActivity(historyIntent);
+        });
 
         Button viewHistoryButton = findViewById(R.id.viewHistoryButton);
         viewHistoryButton.setOnClickListener(v -> {

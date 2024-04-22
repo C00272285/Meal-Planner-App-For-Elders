@@ -30,6 +30,8 @@
         <activity android:name=".ProductDetailActivity"
             android:exported="false" />
 
+        <activity android:name=".ShoppingListActivity"
+            android:exported="false" />
 
         <activity android:name=".ScanActivity"
             android:exported="true">

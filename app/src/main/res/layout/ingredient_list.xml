@@ -10,6 +10,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+
         <TextView
             android:id="@+id/breakfastTitle"
             android:layout_width="wrap_content"
@@ -17,13 +18,14 @@
             android:text="@string/Breakfast"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-        <TextView
-            android:id="@+id/breakfastIngredients"
+        <LinearLayout
+            android:id="@+id/breakfastIngredientsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/breakfast_ingredients"
+            android:orientation="vertical"
             android:padding="8dp" />
 
+        <!-- Lunch Section -->
         <TextView
             android:id="@+id/lunchTitle"
             android:layout_width="wrap_content"
@@ -31,12 +33,13 @@
             android:text="@string/Lunch"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-        <TextView
-            android:id="@+id/lunchIngredients"
+        <LinearLayout
+            android:id="@+id/lunchIngredientsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/lunch_ingredients"
+            android:orientation="vertical"
             android:padding="8dp" />
+
 
         <TextView
             android:id="@+id/dinnerTitle"
@@ -45,11 +48,11 @@
             android:text="@string/Dinner"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-        <TextView
-            android:id="@+id/dinnerIngredients"
+        <LinearLayout
+            android:id="@+id/dinnerIngredientsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/dinner_ingredients"
+            android:orientation="vertical"
             android:padding="8dp" />
 
 
