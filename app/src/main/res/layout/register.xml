@@ -100,12 +100,12 @@
         android:id="@+id/loginNow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
         android:text="@string/Click_To_Log_IN"
         android:textStyle="italic"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/intoleranceSpinner"
+        app:layout_constraintEnd_toEndOf="@+id/intoleranceSpinner"
         app:layout_constraintStart_toStartOf="@+id/intoleranceSpinner"
-        app:layout_constraintEnd_toEndOf="@+id/intoleranceSpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/intoleranceSpinner" />
 
     <ProgressBar
         android:id="@+id/progressBar"

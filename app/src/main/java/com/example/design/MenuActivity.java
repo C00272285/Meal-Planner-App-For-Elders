@@ -32,6 +32,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 public class MenuActivity extends AppCompatActivity implements MenuAdapter.OnMealClickListener
 {
+    //  TODO Need to update the seach bar, does not work on phone.
     private MenuAdapter adapter;
     private final ArrayList<RecipeSearchResponse.Recipe> recipeList = new ArrayList<>();
     private Spinner intoleranceSpinner;

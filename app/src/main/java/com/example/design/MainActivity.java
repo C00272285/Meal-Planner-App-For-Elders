@@ -1,5 +1,6 @@
 package com.example.design;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -255,27 +256,49 @@ public class MainActivity extends AppCompatActivity
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        if (currentUser != null && currentUser.getEmail() != null) {
+        if (currentUser != null && currentUser.getEmail() != null)
+        {
             String encodedEmail = encodeEmail(currentUser.getEmail());
-
             DatabaseReference dbRef = FirebaseDatabase.getInstance("https://mealplanner-a23cb-default-rtdb.europe-west1.firebasedatabase.app/")
-                    .getReference("Users").child(encodedEmail);
+                    .getReference("Users").child(encodedEmail).child("Meals").child(date);
 
-            // Create a map for the meals to update
             Map<String, Object> mealPlanUpdates = new HashMap<>();
-            mealPlanUpdates.put("Meals/" + date + "/breakfast", breakfast);
-            mealPlanUpdates.put("Meals/" + date + "/lunch", lunch);
-            mealPlanUpdates.put("Meals/" + date + "/dinner", dinner);
+            mealPlanUpdates.put("breakfast", breakfast);
+            mealPlanUpdates.put("lunch", lunch);
+            mealPlanUpdates.put("dinner", dinner);
 
-            dbRef.updateChildren(mealPlanUpdates)
-                    .addOnSuccessListener(aVoid -> Toast.makeText(MainActivity.this, "Meal plan saved successfully.", Toast.LENGTH_SHORT).show())
+            dbRef.setValue(mealPlanUpdates)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(MainActivity.this, "Meal plan saved successfully.", Toast.LENGTH_SHORT).show();
+                        showShareMealDialog(breakfast, lunch, dinner);
+                    })
                     .addOnFailureListener(e -> Toast.makeText(MainActivity.this, "Failed to save meal plan: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-        } else {
+        }
+        else
+        {
             Toast.makeText(MainActivity.this, "User not signed in.", Toast.LENGTH_SHORT).show();
         }
     }
+    private void showShareMealDialog(String breakfast, String lunch, String dinner)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Share Meal Plan");
+        builder.setMessage("Do you want to share your meal plan?");
 
+        builder.setPositiveButton("Share", (dialog, which) -> shareMealPlan(breakfast, lunch, dinner));
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
 
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    private void shareMealPlan(String breakfast, String lunch, String dinner)
+    {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "Here's my meal plan for today: \nBreakfast: " + breakfast + "\nLunch: " + lunch + "\nDinner: " + dinner);
+        sendIntent.setType("text/plain");
+        startActivity(Intent.createChooser(sendIntent, "Share with:"));
+    }
     private void updateMealFields(String recipeName, String mealTime)
     {
         EditText targetField;
