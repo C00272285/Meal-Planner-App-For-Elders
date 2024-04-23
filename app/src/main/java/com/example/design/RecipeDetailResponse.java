@@ -1,7 +1,6 @@
 package com.example.design;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
-
 public class RecipeDetailResponse
 {
     @SerializedName("servings")
@@ -45,8 +44,49 @@ public class RecipeDetailResponse
             double amount;
             @SerializedName("unit")
             String unit;
+
+
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
+            }
+
+            public double getAmount() {
+                return amount;
+            }
+
+            public void setAmount(double amount) {
+                this.amount = amount;
+            }
+
+            public String getUnit() {
+                return unit;
+            }
+
+            public void setUnit(String unit) {
+                this.unit = unit;
+            }
+        }
+        public double getNutrientAmount(String nutrientName)
+        {
+            if (nutrients != null)
+            {
+                for (Nutrient nutrient : nutrients)
+                {
+                    if (nutrientName.equals(nutrient.getTitle()))
+                    {
+                        return nutrient.getAmount();
+                    }
+                }
+            }
+            return 0;
         }
     }
+
+
     public Nutrition getNutrition()
     {
         return nutrition;

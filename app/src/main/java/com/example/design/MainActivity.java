@@ -24,7 +24,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 public class MainActivity extends AppCompatActivity
 {
     private TextView textView, totalCaloriesText, caloriesUsedText;
@@ -241,40 +243,86 @@ public class MainActivity extends AppCompatActivity
             mealPlanUpdates.put("Meals/" + date + "/dinner", dinner);
 
             dbRef.updateChildren(mealPlanUpdates)
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(MainActivity.this, "Meal plan saved successfully.", Toast.LENGTH_SHORT).show();
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(MainActivity.this, "Failed to save meal plan: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
+                    .addOnSuccessListener(aVoid -> Toast.makeText(MainActivity.this, "Meal plan saved successfully.", Toast.LENGTH_SHORT).show())
+                    .addOnFailureListener(e -> Toast.makeText(MainActivity.this, "Failed to save meal plan: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         } else {
             Toast.makeText(MainActivity.this, "User not signed in.", Toast.LENGTH_SHORT).show();
         }
     }
 
 
-    private void updateMealFields(String recipeName, String mealTime) {
+    private void updateMealFields(String recipeName, String mealTime)
+    {
         EditText targetField;
-        switch (mealTime) {
+        TextView calorieField;
+        switch (mealTime)
+        {
             case "Breakfast":
                 targetField = breakfastEditText;
+                calorieField = findViewById(R.id.totalCaloriesBreakfast);
                 break;
             case "Lunch":
                 targetField = lunchEditText;
+                calorieField = findViewById(R.id.totalCaloriesLunch);
                 break;
             case "Dinner":
                 targetField = dinnerEditText;
+                calorieField = findViewById(R.id.totalCaloriesDinner);
                 break;
             default:
                 Toast.makeText(this, "Invalid meal time selected.", Toast.LENGTH_SHORT).show();
                 return;
         }
-        // Append the new item with a line below it
+        fetchCalories(recipeName, calorieField);
+        appendMeal(targetField, recipeName);
+    }
+
+    private void fetchCalories(String recipeName, TextView calorieField)
+    {
+        RequestManager.getInstance().searchRecipesByNameCustom(recipeName, new Callback<CustomRecipeSearchResponse>()
+        {
+            @Override
+            public void onResponse(@NonNull Call<CustomRecipeSearchResponse> call, @NonNull Response<CustomRecipeSearchResponse> response)
+            {
+                if (response.isSuccessful() && response.body() != null && !response.body().getResults().isEmpty()) {
+                    int recipeId = response.body().getResults().get(0).getId();
+                    RequestManager.getInstance().getRecipeDetails(recipeId, true, new Callback<RecipeDetailResponse>()
+                    {
+                        @Override
+                        public void onResponse(@NonNull Call<RecipeDetailResponse> call, @NonNull Response<RecipeDetailResponse> response)
+                        {
+                            if (response.isSuccessful() && response.body() != null)
+                            {
+                                double calories = response.body().getNutrition().getNutrientAmount("Calories");
+                                runOnUiThread(() -> calorieField.setText(String.format(Locale.getDefault(), "Calories: %.2f", calories)));
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<RecipeDetailResponse> call, @NonNull Throwable t)
+                        {
+                            Toast.makeText(MainActivity.this, "Error fetching calories", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<CustomRecipeSearchResponse> call, @NonNull Throwable t)
+            {
+                Toast.makeText(MainActivity.this, "Error fetching recipe details", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void appendMeal(EditText targetField, String recipeName)
+    {
         String currentContent = targetField.getText().toString();
-        if (!currentContent.isEmpty()) {
-            currentContent += "\n------------------------\n"; // Divider line
+        if (!currentContent.isEmpty())
+        {
+            currentContent += "\n------------------------\n";
         }
-        currentContent += recipeName; // New item
+        currentContent += recipeName;
         targetField.setText(currentContent);
     }
 
