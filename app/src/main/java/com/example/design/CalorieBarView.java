@@ -35,6 +35,11 @@ public class CalorieBarView extends View {
         remainingPaint.setStyle(Paint.Style.FILL);
     }
 
+    public void setCalories(double total, double consumed) {
+        this.totalCalories = total;
+        this.consumedCalories = consumed;
+        invalidate(); // Redraw the bar with updated values
+    }
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);

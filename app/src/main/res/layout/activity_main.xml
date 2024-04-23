@@ -290,31 +290,32 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/totalCaloriesText"
+        app:layout_constraintVertical_bias="0.741"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/totalCaloriesText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="318dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="294dp"
+        android:layout_marginBottom="24dp"
         android:text="@string/total_calories"
-        app:layout_constraintBottom_toTopOf="@+id/calorieBarView"
+        app:layout_constraintBottom_toTopOf="@+id/shoppinglist"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/calorieBarView" />
 
     <TextView
         android:id="@+id/caloriesUsedText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="220dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="301dp"
         android:text="@string/calories_used"
         app:layout_constraintBottom_toTopOf="@+id/calorieBarView"
-        app:layout_constraintEnd_toStartOf="@+id/totalCaloriesText"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -24,6 +24,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity
     private CalorieBarView calorieBarView;
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference;
+    private double totalConsumedCalories = 0;
     private final ActivityResultLauncher<Intent> menuActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result ->
@@ -55,8 +58,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
         initializeViews();
-        //updateCalorieDisplay(0);
-        //fetchUserData();
+        updateCalorieDisplay(0);
+        fetchUserData();
     }
     @SuppressLint("SetTextI18n")
     private void initializeViews()
@@ -67,9 +70,9 @@ public class MainActivity extends AppCompatActivity
         dinnerEditText = findViewById(R.id.dinner);
         lunchEditText = findViewById(R.id.lunch);
         breakfastEditText = findViewById(R.id.breakfast);
-        //totalCaloriesText = findViewById(R.id.totalCaloriesText);
-        //caloriesUsedText = findViewById(R.id.caloriesUsedText);
-        //calorieBarView = findViewById(R.id.calorieBarView);
+        totalCaloriesText = findViewById(R.id.totalCaloriesText);
+        caloriesUsedText = findViewById(R.id.caloriesUsedText);
+        calorieBarView = findViewById(R.id.calorieBarView);
         Button insertButton = findViewById(R.id.button);
         Button recipesButton = findViewById(R.id.Recipes);
         Button shoppingButton = findViewById(R.id.shoppinglist);
@@ -96,54 +99,57 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-//    public void fetchUserData() {
-//        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-//        if (currentUser != null) {
-//            String userKey = Objects.requireNonNull(currentUser.getEmail()).replace(".", ",");
-//            DatabaseReference databaseReference = FirebaseDatabase.getInstance("https://mealplanner-a23cb-default-rtdb.europe-west1.firebasedatabase.app/")
-//                    .getReference("Users").child(userKey);
-//
-//            databaseReference.addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                    if (dataSnapshot.exists()) {
-//                        try {
-//                            String weightString = dataSnapshot.child("Weight").getValue(String.class);
-//                            String heightString = dataSnapshot.child("Height").getValue(String.class);
-//                            String ageString = dataSnapshot.child("Age").getValue(String.class);
-//
-//                            double weight = weightString != null ? Double.parseDouble(weightString) : 0;
-//                            double height = heightString != null ? Double.parseDouble(heightString) : 0;
-//                            int age = ageString != null ? Integer.parseInt(ageString) : 0;
-//
-//                            String gender = dataSnapshot.child("Gender").getValue(String.class);
-//                            String activityLevel = dataSnapshot.child("ActivityLevel").getValue(String.class);
-//
-//                            double totalCalories = BMRCalculator.calculateBMR(gender, weight, height, age, activityLevel);
-//                            updateCalorieDisplay(totalCalories); // Update UI with default consumed calories as 0
-//                        } catch (NumberFormatException e) {
-//                            Toast.makeText(MainActivity.this, "Error parsing user data: " + e.getMessage(), Toast.LENGTH_LONG).show();
-//                        }
-//                    } else {
-//                        Toast.makeText(MainActivity.this, "User data not found.", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError databaseError) {
-//                    Toast.makeText(MainActivity.this, "Failed to load user data: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//        } else {
-//            Toast.makeText(this, "User not logged in.", Toast.LENGTH_SHORT).show();
-//        }
-//    }
+    public void fetchUserData() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String userKey = Objects.requireNonNull(currentUser.getEmail()).replace(".", ",");
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance("https://mealplanner-a23cb-default-rtdb.europe-west1.firebasedatabase.app/")
+                    .getReference("Users").child(userKey);
 
-    //    @SuppressLint("SetTextI18n")
-//    private void updateCalorieDisplay(double totalCalories) {
-//        totalCaloriesText.setText("Total Calories: " + totalCalories);
-//        caloriesUsedText.setText("Calories Used: " + (double) 0);
-//    }
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        try {
+                            String weightString = dataSnapshot.child("Weight").getValue(String.class);
+                            String heightString = dataSnapshot.child("Height").getValue(String.class);
+                            String ageString = dataSnapshot.child("Age").getValue(String.class);
+
+                            double weight = weightString != null ? Double.parseDouble(weightString) : 0;
+                            double height = heightString != null ? Double.parseDouble(heightString) : 0;
+                            int age = ageString != null ? Integer.parseInt(ageString) : 0;
+
+                            String gender = dataSnapshot.child("Gender").getValue(String.class);
+                            String activityLevel = dataSnapshot.child("ActivityLevel").getValue(String.class);
+
+                            double totalCalories = BMRCalculator.calculateBMR(gender, weight, height, age, activityLevel);
+                            updateCalorieDisplay(totalCalories); // Update UI with default consumed calories as 0
+                        } catch (NumberFormatException e) {
+                            Toast.makeText(MainActivity.this, "Error parsing user data: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        Toast.makeText(MainActivity.this, "User data not found.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(MainActivity.this, "Failed to load user data: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Toast.makeText(this, "User not logged in.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+        @SuppressLint("SetTextI18n")
+        private void updateCalorieDisplay(double totalCalories) {
+            totalCaloriesText.setText("Total Calories: " + totalCalories);
+            caloriesUsedText.setText(String.format(Locale.getDefault(), "Calories Used: %.2f", totalConsumedCalories));
+            if (calorieBarView != null) {
+                calorieBarView.setCalories(totalCalories, totalConsumedCalories);
+            }
+        }
 
 
     @SuppressLint("SetTextI18n")
@@ -292,11 +298,11 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(this, "Invalid meal time selected.", Toast.LENGTH_SHORT).show();
                 return;
         }
-        fetchCalories(recipeName, calorieField);
+        fetchCalories(recipeName, calorieField, mealTime);
         appendMeal(targetField, recipeName);
     }
 
-    private void fetchCalories(String recipeName, TextView calorieField)
+    private void fetchCalories(String recipeName, TextView calorieField, String mealTime)
     {
         RequestManager.getInstance().searchRecipesByNameCustom(recipeName, new Callback<CustomRecipeSearchResponse>()
         {
@@ -316,7 +322,11 @@ public class MainActivity extends AppCompatActivity
                                 double calories = response.body().getNutrition().getNutrientAmount("Calories");
                                 double currentCalories = getCurrentCalories(calorieField.getText().toString());
                                 double totalCalories = currentCalories + calories;
+                                totalConsumedCalories += calories;
                                 runOnUiThread(() -> calorieField.setText(String.format(Locale.getDefault(), "Calories: %.2f", totalCalories)));
+                                updateConsumedCaloriesDisplay();
+                                totalConsumedCalories += calories;
+                                updateCalorieBarView();
                             }
                         }
 
@@ -335,6 +345,20 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(MainActivity.this, "Error fetching recipe details", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void updateCalorieBarView()
+    {
+        double totalCalories = Double.parseDouble(totalCaloriesText.getText().toString().replace("Total Calories: ", ""));
+        if (calorieBarView != null)
+        {
+            calorieBarView.setCalories(totalCalories, totalConsumedCalories);
+        }
+    }
+    private void updateConsumedCaloriesDisplay()
+    {
+        caloriesUsedText.setText(String.format(Locale.getDefault(), "Calories Used: %.2f", totalConsumedCalories));
+        updateCalorieBarView();
     }
     private double getCurrentCalories(String calorieText)
     {
@@ -357,7 +381,7 @@ public class MainActivity extends AppCompatActivity
         {
             currentContent += "\n------------------------\n";
         }
-        currentContent += recipeName; // Add new item
+        currentContent += recipeName;
         targetField.setText(currentContent);
     }
     private void loadMealSelections() {
