@@ -74,16 +74,15 @@ public class MainActivity extends AppCompatActivity
         Button recipesButton = findViewById(R.id.Recipes);
         Button shoppingButton = findViewById(R.id.shoppinglist);
 
-
-
-
-
         calendar = Calendar.getInstance();
         updateDateTextView();
         previousButton.setOnClickListener(v -> navigateDays(-1));
         nextButton.setOnClickListener(v -> navigateDays(1));
         insertButton.setOnClickListener(v -> saveMealPlanToDatabase());
         recipesButton.setOnClickListener(v -> openRecipesView());
+
+        Button clearMealsButton = findViewById(R.id.clearMealsButton);
+        clearMealsButton.setOnClickListener(v -> clearMealEntries());
 
         shoppingButton.setOnClickListener(v -> {
             Intent historyIntent = new Intent(MainActivity.this, ShoppingListActivity.class);
@@ -147,11 +146,31 @@ public class MainActivity extends AppCompatActivity
 //    }
 
 
-    private void clearMealEntries() {
+    @SuppressLint("SetTextI18n")
+    private void clearMealEntries()
+    {
         breakfastEditText.setText("");
         lunchEditText.setText("");
         dinnerEditText.setText("");
+        TextView breakfastCalories = findViewById(R.id.totalCaloriesBreakfast);
+        TextView lunchCalories = findViewById(R.id.totalCaloriesLunch);
+        TextView dinnerCalories = findViewById(R.id.totalCaloriesDinner);
+        breakfastCalories.setText("Calories: 0");
+        lunchCalories.setText("Calories: 0");
+        dinnerCalories.setText("Calories: 0");
+        clearMealPreferences();
     }
+
+    private void clearMealPreferences() {
+        SharedPreferences prefs = getSharedPreferences("MealSelections", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove("Breakfast");
+        editor.remove("Lunch");
+        editor.remove("Dinner");
+        editor.apply();
+    }
+
+
 
     private void navigateDays(int days) {
         calendar.add(Calendar.DAY_OF_YEAR, days);
@@ -284,7 +303,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onResponse(@NonNull Call<CustomRecipeSearchResponse> call, @NonNull Response<CustomRecipeSearchResponse> response)
             {
-                if (response.isSuccessful() && response.body() != null && !response.body().getResults().isEmpty()) {
+                if (response.isSuccessful() && response.body() != null && !response.body().getResults().isEmpty())
+                {
                     int recipeId = response.body().getResults().get(0).getId();
                     RequestManager.getInstance().getRecipeDetails(recipeId, true, new Callback<RecipeDetailResponse>()
                     {
@@ -294,7 +314,9 @@ public class MainActivity extends AppCompatActivity
                             if (response.isSuccessful() && response.body() != null)
                             {
                                 double calories = response.body().getNutrition().getNutrientAmount("Calories");
-                                runOnUiThread(() -> calorieField.setText(String.format(Locale.getDefault(), "Calories: %.2f", calories)));
+                                double currentCalories = getCurrentCalories(calorieField.getText().toString());
+                                double totalCalories = currentCalories + calories;
+                                runOnUiThread(() -> calorieField.setText(String.format(Locale.getDefault(), "Calories: %.2f", totalCalories)));
                             }
                         }
 
@@ -314,7 +336,20 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
-
+    private double getCurrentCalories(String calorieText)
+    {
+        if (calorieText.startsWith("Calories: "))
+        {
+            try
+            {
+              return Double.parseDouble(calorieText.substring("Calories: ".length()).trim());
+            } catch (NumberFormatException e) {
+                Toast.makeText(MainActivity.this, "Error parsing current calories", Toast.LENGTH_SHORT).show();
+                return 0;
+            }
+        }
+        return 0;
+    }
     private void appendMeal(EditText targetField, String recipeName)
     {
         String currentContent = targetField.getText().toString();
@@ -322,10 +357,9 @@ public class MainActivity extends AppCompatActivity
         {
             currentContent += "\n------------------------\n";
         }
-        currentContent += recipeName;
+        currentContent += recipeName; // Add new item
         targetField.setText(currentContent);
     }
-
     private void loadMealSelections() {
         SharedPreferences prefs = getSharedPreferences("MealSelections", MODE_PRIVATE);
         String breakfast = prefs.getString("Breakfast", "");
@@ -336,9 +370,9 @@ public class MainActivity extends AppCompatActivity
         lunchEditText.setText(lunch);
         dinnerEditText.setText(dinner);
     }
-
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
         loadMealSelections();
     }
