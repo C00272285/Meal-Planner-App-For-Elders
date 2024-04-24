@@ -19,12 +19,8 @@
             android:hint="@string/search_here"
             android:layout_marginTop="8dp"
             android:inputType="text"
-            android:autofillHints="" />
-
-        <Spinner
-            android:id="@+id/spinner_dietary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:autofillHints=""
+            android:imeOptions="actionSearch" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

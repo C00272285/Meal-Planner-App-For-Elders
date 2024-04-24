@@ -47,12 +47,12 @@ public class Register extends AppCompatActivity {
         TextView loginNow = findViewById(R.id.loginNow);
 
           //This checks to see if the user has registered which will automatically bring them to the Meal Planner Screen.
-        if (mAuth.getCurrentUser() != null)
-        {
-            startActivity(new Intent(Register.this, MainActivity.class));
-            finish();
-            return;
-        }
+//        if (mAuth.getCurrentUser() != null)
+//        {
+//            startActivity(new Intent(Register.this, MainActivity.class));
+//            finish();
+//            return;
+//        }
         Spinner activityLevelSpinner = findViewById(R.id.activitySpinner);
         ArrayAdapter<CharSequence> activityAdapter = ArrayAdapter.createFromResource(this,
                 R.array.activity_levels, android.R.layout.simple_spinner_item);
@@ -62,15 +62,15 @@ public class Register extends AppCompatActivity {
 
 
         // Setting click listener to navigate to the Login activity
-//        loginNow.setOnClickListener(v ->
-//        {
-//            // Intent to navigate from Register to Login activity
-//            Intent intent = new Intent(Register.this, Login.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // This clears the stack, this should solve the issues of the app closing when using the "ADD" button.
-//            startActivity(intent);
-//            finish();
-//        });
-//
+        loginNow.setOnClickListener(v ->
+        {
+            // Intent to navigate from Register to Login activity
+            Intent intent = new Intent(Register.this, Login.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // This clears the stack, this should solve the issues of the app closing when using the "ADD" button.
+            startActivity(intent);
+            finish();
+        });
+
         // Setup Spinner for intolerance
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.dietary_options_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

@@ -1,81 +1,274 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".HistoryActivity">
+    android:layout_height="wrap_content"
+    android:padding="16dp">
 
-
-    <TextView
-        android:id="@+id/dateDisplay"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/HistoryDate"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/nextDay"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@id/previousDay"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.133" />
+        android:padding="8dp">
 
-    <ImageView
-        android:id="@+id/previousDay"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:importantForAccessibility="no"
-        android:src="@drawable/ic_left_arrow_vector"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.118" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="16dp">
 
-    <TextView
-        android:id="@+id/lunchHistory"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:text="@string/Lunch"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/breakfastHistory" />
+            <ImageView
+                android:id="@+id/previousWeekButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_left_arrow_vector"
+                android:contentDescription="@string/last_week" />
 
-    <ImageView
-        android:id="@+id/nextDay"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="16dp"
-        android:importantForAccessibility="no"
-        android:src="@drawable/ic_right_arrow_vector"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.118" />
+            <TextView
+                android:id="@+id/weekDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
 
-    <TextView
-        android:id="@+id/dinnerHistory"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:text="@string/Dinner"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lunchHistory" />
+            <ImageView
+                android:id="@+id/nextWeekButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_right_arrow_vector"
+                android:contentDescription="@string/next_week" />
 
-    <TextView
-        android:id="@+id/breakfastHistory"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:text="@string/Breakfast"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dateDisplay" />
+        </LinearLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/dateMonday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Monday"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/breakfastMonday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Breakfast: "
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/lunchMonday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lunch: "
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/dinnerMonday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dinner: "
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/dateTuesday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tuesday"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/breakfastTuesday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Breakfast: "
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/lunchTuesday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lunch: "
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/dinnerTuesday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dinner: "
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/dateWednesday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Wednesday"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/breakfastWednesday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Breakfast: "
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/lunchWednesday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lunch: "
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/dinnerWednesday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dinner: "
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/dateThursday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thursday"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/breakfastThursday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Breakfast: "
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/lunchThursday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lunch: "
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/dinnerThursday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dinner: "
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/dateFriday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Friday"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/breakfastFriday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Breakfast: "
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/lunchFriday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lunch: "
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/dinnerFriday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dinner: "
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/dateSaturday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Saturday"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/breakfastSaturday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Breakfast: "
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/lunchSaturday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lunch: "
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/dinnerSaturday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dinner: "
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/dateSunday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sunday"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/breakfastSunday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Breakfast: "
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/lunchSunday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lunch: "
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/dinnerSunday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dinner: "
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/shareButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/share_mealplan"
+            android:layout_gravity="center_horizontal"
+            android:padding="8dp"
+            android:textSize="18sp"
+            android:layout_marginTop="16dp"/>
+    </LinearLayout>
+</ScrollView>

@@ -283,7 +283,7 @@
     <com.example.design.CalorieBarView
         android:id="@+id/calorieBarView"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="14dp"
         android:layout_marginBottom="170dp"
         app:layout_constraintBottom_toTopOf="@+id/previousButton"
         app:layout_constraintEnd_toEndOf="parent"

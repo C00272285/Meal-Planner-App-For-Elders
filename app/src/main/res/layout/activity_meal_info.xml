@@ -87,13 +87,6 @@
             android:text="@string/return_to_menu"
             android:layout_gravity="center_horizontal"/>
 
-        <Button
-            android:id="@+id/addToMealPlanButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/addMeal"
-            android:layout_gravity="center_horizontal"/>
-
 
     </LinearLayout>
 </ScrollView>

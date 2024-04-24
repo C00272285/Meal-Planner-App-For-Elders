@@ -6,13 +6,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,10 +28,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 public class MenuActivity extends AppCompatActivity implements MenuAdapter.OnMealClickListener
 {
-    //  TODO Need to update the seach bar, does not work on phone.
     private MenuAdapter adapter;
     private final ArrayList<RecipeSearchResponse.Recipe> recipeList = new ArrayList<>();
-    private Spinner intoleranceSpinner;
     private EditText searchEditText;
     private Button scanButton, logoutButton, mealPlanButton;
     private String selectedMealTime;
@@ -48,7 +42,6 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.OnMea
         setContentView(R.layout.menu_item_main);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        intoleranceSpinner = findViewById(R.id.spinner_dietary);
         searchEditText = findViewById(R.id.editText_search);
         scanButton = findViewById(R.id.scanButton);
         logoutButton = findViewById(R.id.signOutButton);
@@ -61,30 +54,9 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.OnMea
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new MenuAdapter(this, recipeList, this);
         recyclerView.setAdapter(adapter);
-
-        setupSpinner();
         setupSearchEditText();
         setupButtons();
         loadRecipes("");
-    }
-
-    private void setupSpinner()
-    {
-        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
-                R.array.dietary_options_array, android.R.layout.simple_spinner_item);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        intoleranceSpinner.setAdapter(spinnerAdapter);
-        intoleranceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id)
-            {
-                filterRecipes();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {}
-        });
     }
 
     private void fetchUserIntolerance() {

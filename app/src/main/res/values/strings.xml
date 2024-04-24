@@ -86,6 +86,9 @@
     <string name="clear_meals">Clear Meals</string>
     <string name="add_to_shopping_list">Add to Shopping List</string>
     <string name="refresh">Refresh</string>
+    <string name="last_week">Last Week\n</string>
+    <string name="next_week">Next Week</string>
+    <string name="share_mealplan">Share MealPlan</string>
 
     <string-array name="activity_levels">
         <item>Sedentary</item>
