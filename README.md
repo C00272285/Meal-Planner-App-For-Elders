@@ -1,1 +1,1 @@
-Meal planner for elders, is a project that was completed as my 3rd year project
+To access the App go to the Master Branch
